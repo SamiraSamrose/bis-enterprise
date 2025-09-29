@@ -4,82 +4,433 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BIS - Baseline Intelligence System | Enterprise Edition</title>
-    <meta name="description" content="AI-Powered Web Compatibility Advisor for Enterprise Teams">
-    
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- React -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
-    <!-- Babel Standalone -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
     <style>
-        /* Ensure Tailwind processes properly */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-            overflow-x: hidden;
-        }
-        
-        #root {
-            min-height: 100vh;
-        }
-        
-        /* Loading spinner */
-        .spinner {
-            border: 3px solid rgba(168, 85, 247, 0.3);
-            border-top: 3px solid #a855f7;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Ensure backgrounds work */
-        .gradient-bg {
-            background: linear-gradient(to bottom right, #020617, #581c87, #020617);
-        }
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; }
+        #root { min-height: 100vh; }
     </style>
 </head>
 <body>
-    <div id="root">
-        <!-- Loading State -->
-        <div class="gradient-bg" style="min-height: 100vh; display: flex; align-items: center; justify-content: center;">
-            <div style="text-align: center;">
-                <div class="spinner"></div>
-                <p style="color: #a855f7; font-size: 20px; font-weight: 600;">Loading BIS Enterprise...</p>
-                <p style="color: #9333ea; font-size: 14px; margin-top: 10px;">Initializing AI Platform</p>
-            </div>
-        </div>
-    </div>
+    <div id="root"></div>
     
-    <!-- Main Application - Load this AFTER React is ready -->
-    <script type="text/babel" data-type="module">
-        // Wait for React to be fully loaded
-        const checkReact = setInterval(() => {
-            if (window.React && window.ReactDOM) {
-                clearInterval(checkReact);
-                // Load the app
-                const script = document.createElement('script');
-                script.src = './app.js';
-                script.type = 'text/babel';
-                document.body.appendChild(script);
-            }
-        }, 100);
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        
+        // SVG Icons
+        const Globe = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>;
+        const Code = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>;
+        const AlertTriangle = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>;
+        const CheckCircle = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>;
+        const XCircle = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>;
+        const Search = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
+        const Users = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+        const DollarSign = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>;
+        const Clock = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
+        const Shield = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>;
+        const Database = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>;
+        const BarChart3 = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>;
+        const Activity = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>;
+        const Cpu = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>;
+        const Zap = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
+        const Brain = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>;
+        const Sparkles = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>;
+        const Terminal = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>;
+
+        const BISEnterprise = () => {
+          const [activeTab, setActiveTab] = useState('analyzer');
+          const [url, setUrl] = useState('');
+          const [selectedRegion, setSelectedRegion] = useState('global');
+          const [analyzing, setAnalyzing] = useState(false);
+          const [results, setResults] = useState(null);
+          const [cicdLogs, setCicdLogs] = useState([]);
+          const [realTimeMetrics, setRealTimeMetrics] = useState({
+            activeScans: 1247,
+            issuesBlocked: 89,
+            moneySaved: 450000,
+            deploymentsSafe: 99.7
+          });
+
+          useEffect(() => {
+            const interval = setInterval(() => {
+              setRealTimeMetrics(prev => ({
+                activeScans: prev.activeScans + Math.floor(Math.random() * 10),
+                issuesBlocked: prev.issuesBlocked + Math.floor(Math.random() * 3),
+                moneySaved: prev.moneySaved + Math.floor(Math.random() * 5000),
+                deploymentsSafe: 99.7 + (Math.random() * 0.2 - 0.1)
+              }));
+            }, 3000);
+            return () => clearInterval(interval);
+          }, []);
+
+          const mockFeatures = [
+            { name: ':has() CSS Selector', type: 'CSS', baseline: false, support: { global: 73, brazil: 68, india: 65, us: 82, china: 71, japan: 78, germany: 80 }, risk: 'high', businessImpact: 'High - Affects navigation UX', estimatedUsers: 2400000, revenueImpact: 180000, alternative: 'Use JavaScript querySelector', autoFixAvailable: true, jiraTickets: 3 },
+            { name: 'backdrop-filter', type: 'CSS', baseline: false, support: { global: 78, brazil: 72, india: 69, us: 85, china: 75, japan: 82, germany: 84 }, risk: 'medium', businessImpact: 'Medium - Visual degradation', estimatedUsers: 1800000, revenueImpact: 95000, alternative: 'Use solid backgrounds with opacity', autoFixAvailable: true, jiraTickets: 1 },
+            { name: 'Container Queries', type: 'CSS', baseline: false, support: { global: 71, brazil: 65, india: 62, us: 79, china: 68, japan: 76, germany: 78 }, risk: 'high', businessImpact: 'Critical - Breaks responsive design', estimatedUsers: 3200000, revenueImpact: 280000, alternative: 'Use ResizeObserver', autoFixAvailable: true, jiraTickets: 5 },
+            { name: 'Web Share API', type: 'JS', baseline: false, support: { global: 82, brazil: 88, india: 85, us: 79, china: 45, japan: 83, germany: 81 }, risk: 'critical', businessImpact: 'Critical - Sharing blocked', estimatedUsers: 4500000, revenueImpact: 420000, alternative: 'Fallback to clipboard', autoFixAvailable: true, jiraTickets: 8 },
+            { name: 'CSS Grid', type: 'CSS', baseline: true, support: { global: 96, brazil: 95, india: 94, us: 98, china: 96, japan: 97, germany: 98 }, risk: 'low', businessImpact: 'Low - Stable', estimatedUsers: 300000, revenueImpact: 0, alternative: 'None needed', autoFixAvailable: false, jiraTickets: 0 },
+          ];
+
+          const regions = [
+            { id: 'global', name: 'Global', flag: '🌍' },
+            { id: 'us', name: 'United States', flag: '🇺🇸' },
+            { id: 'brazil', name: 'Brazil', flag: '🇧🇷' },
+            { id: 'india', name: 'India', flag: '🇮🇳' },
+            { id: 'china', name: 'China', flag: '🇨🇳' },
+            { id: 'japan', name: 'Japan', flag: '🇯🇵' },
+            { id: 'germany', name: 'Germany', flag: '🇩🇪' },
+          ];
+
+          const analyzeSite = () => {
+            if (!url) return;
+            setAnalyzing(true);
+            setCicdLogs([]);
+            
+            const phases = ['Crawling pages...', 'Extracting CSS...', 'Analyzing JavaScript...', 'Cross-referencing data...', 'Calculating impact...', 'Done!'];
+            let idx = 0;
+            
+            const interval = setInterval(() => {
+              if (idx < phases.length) {
+                setCicdLogs(prev => [...prev, { time: new Date().toLocaleTimeString(), msg: phases[idx], type: idx === phases.length - 1 ? 'success' : 'info' }]);
+                idx++;
+              } else {
+                clearInterval(interval);
+              }
+            }, 300);
+
+            setTimeout(() => {
+              const features = mockFeatures.slice(0, 4);
+              const avg = Math.round(features.reduce((a, f) => a + f.support[selectedRegion], 0) / features.length);
+              setResults({
+                url, features, avgSupport: avg,
+                riskScore: avg > 85 ? 'low' : avg > 70 ? 'medium' : 'high',
+                usersAffected: features.reduce((a, f) => a + f.estimatedUsers, 0),
+                revenueAtRisk: features.reduce((a, f) => a + f.revenueImpact, 0),
+                criticalIssues: features.filter(f => f.risk === 'critical' || f.risk === 'high').length,
+                estimatedFixTime: features.length * 2.5,
+                jiraTickets: features.reduce((a, f) => a + f.jiraTickets, 0),
+              });
+              setAnalyzing(false);
+            }, 2000);
+          };
+
+          const getRiskColor = (risk) => {
+            const colors = {
+              low: 'text-green-400 bg-green-500/20 border-green-500/30',
+              medium: 'text-yellow-400 bg-yellow-500/20 border-yellow-500/30',
+              high: 'text-orange-400 bg-orange-500/20 border-orange-500/30',
+              critical: 'text-red-400 bg-red-500/20 border-red-500/30'
+            };
+            return colors[risk] || 'text-gray-400 bg-gray-500/20';
+          };
+
+          const getSupportColor = (support) => {
+            if (support >= 90) return 'bg-gradient-to-r from-green-500 to-emerald-500';
+            if (support >= 75) return 'bg-gradient-to-r from-yellow-500 to-orange-500';
+            return 'bg-gradient-to-r from-red-500 to-pink-500';
+          };
+
+          return (
+            <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
+              <div className="bg-black/40 backdrop-blur-xl border-b border-purple-500/20">
+                <div className="max-w-7xl mx-auto px-6 py-4">
+                  <div className="flex items-center justify-between flex-wrap gap-4">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl blur-xl opacity-50"></div>
+                        <div className="relative w-14 h-14 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center">
+                          <Brain className="w-8 h-8 text-white" />
+                        </div>
+                      </div>
+                      <div>
+                        <h1 className="text-2xl font-bold bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent">Baseline Intelligence System</h1>
+                        <p className="text-purple-300 text-sm flex items-center gap-2"><Sparkles className="w-3 h-3" />Enterprise AI Platform</p>
+                      </div>
+                    </div>
+                    <select value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)} className="bg-white/10 text-white border border-purple-500/30 rounded-lg px-4 py-2">
+                      {regions.map(r => <option key={r.id} value={r.id} className="bg-slate-900">{r.flag} {r.name}</option>)}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-purple-900/30 via-pink-900/30 to-purple-900/30 border-b border-purple-500/20">
+                <div className="max-w-7xl mx-auto px-6 py-4">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="flex items-center space-x-3">
+                      <Cpu className="w-10 h-10 text-blue-400 p-2 bg-blue-500/20 rounded-lg flex-shrink-0" />
+                      <div><p className="text-xs text-purple-300">Active Scans</p><p className="text-lg font-bold text-white">{realTimeMetrics.activeScans.toLocaleString()}</p></div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Shield className="w-10 h-10 text-red-400 p-2 bg-red-500/20 rounded-lg flex-shrink-0" />
+                      <div><p className="text-xs text-purple-300">Issues Blocked</p><p className="text-lg font-bold text-white">{realTimeMetrics.issuesBlocked}</p></div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <DollarSign className="w-10 h-10 text-green-400 p-2 bg-green-500/20 rounded-lg flex-shrink-0" />
+                      <div><p className="text-xs text-purple-300">Revenue</p><p className="text-lg font-bold text-white">${(realTimeMetrics.moneySaved / 1000).toFixed(0)}K</p></div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <CheckCircle className="w-10 h-10 text-purple-400 p-2 bg-purple-500/20 rounded-lg flex-shrink-0" />
+                      <div><p className="text-xs text-purple-300">Safe Deploy</p><p className="text-lg font-bold text-white">{realTimeMetrics.deploymentsSafe.toFixed(1)}%</p></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="max-w-7xl mx-auto px-6 mt-6">
+                <div className="flex flex-wrap gap-2 bg-black/30 p-1.5 rounded-xl backdrop-blur-xl border border-purple-500/20">
+                  <button onClick={() => setActiveTab('analyzer')} className={`flex-1 min-w-[120px] px-4 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${activeTab === 'analyzer' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : 'text-purple-300'}`}>
+                    <Search className="w-4 h-4" />Site Analyzer
+                  </button>
+                  <button onClick={() => setActiveTab('coach')} className={`flex-1 min-w-[120px] px-4 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${activeTab === 'coach' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : 'text-purple-300'}`}>
+                    <Brain className="w-4 h-4" />AI Coach
+                  </button>
+                  <button onClick={() => setActiveTab('database')} className={`flex-1 min-w-[120px] px-4 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${activeTab === 'database' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : 'text-purple-300'}`}>
+                    <Database className="w-4 h-4" />Feature DB
+                  </button>
+                </div>
+              </div>
+
+              <div className="max-w-7xl mx-auto px-6 py-8">
+                {activeTab === 'analyzer' && (
+                  <div className="space-y-6">
+                    <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-purple-500/20">
+                      <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Deep Site Analysis</h2>
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://your-site.com" className="flex-1 bg-white/10 text-white border border-purple-500/30 rounded-xl px-6 py-4" />
+                        <button onClick={analyzeSite} disabled={analyzing || !url} className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-xl font-bold disabled:opacity-50 transition-all flex items-center justify-center gap-2 whitespace-nowrap">
+                          {analyzing ? <><Activity className="w-5 h-5 animate-spin" />Analyzing...</> : <><Zap className="w-5 h-5" />Analyze</>}
+                        </button>
+                      </div>
+                    </div>
+
+                    {analyzing && cicdLogs.length > 0 && (
+                      <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 border border-purple-500/20">
+                        <div className="flex items-center gap-2 mb-4">
+                          <Terminal className="w-5 h-5 text-green-400" />
+                          <h3 className="text-white font-bold">Live Log</h3>
+                        </div>
+                        <div className="bg-black/60 rounded-lg p-4 font-mono text-sm space-y-1 max-h-40 overflow-y-auto">
+                          {cicdLogs.map((log, i) => (
+                            <div key={i} className={log.type === 'success' ? 'text-green-400' : 'text-purple-300'}>
+                              <span className="text-purple-500">[{log.time}]</span> {log.msg}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {results && (
+                      <div className="space-y-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                          <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl p-6 border border-blue-500/30">
+                            <BarChart3 className="w-8 h-8 text-blue-400 mb-3" />
+                            <p className="text-blue-300 text-sm">Compatibility</p>
+                            <p className="text-3xl font-bold text-white">{results.avgSupport}%</p>
+                          </div>
+                          <div className="bg-gradient-to-br from-red-500/20 to-red-600/20 rounded-2xl p-6 border border-red-500/30">
+                            <Users className="w-8 h-8 text-red-400 mb-3" />
+                            <p className="text-red-300 text-sm">Users Affected</p>
+                            <p className="text-3xl font-bold text-white">{(results.usersAffected / 1000000).toFixed(1)}M</p>
+                          </div>
+                          <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-2xl p-6 border border-green-500/30">
+                            <DollarSign className="w-8 h-8 text-green-400 mb-3" />
+                            <p className="text-green-300 text-sm">Revenue Risk</p>
+                            <p className="text-3xl font-bold text-white">${(results.revenueAtRisk / 1000).toFixed(0)}K</p>
+                          </div>
+                          <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl p-6 border border-purple-500/30">
+                            <Clock className="w-8 h-8 text-purple-400 mb-3" />
+                            <p className="text-purple-300 text-sm">Fix Time</p>
+                            <p className="text-3xl font-bold text-white">{results.estimatedFixTime}h</p>
+                          </div>
+                        </div>
+
+                        <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-purple-500/20">
+                          <h3 className="text-xl md:text-2xl font-bold text-white mb-6">Detected Features</h3>
+                          <div className="space-y-4">
+                            {results.features.map((f, i) => (
+                              <div key={i} className="bg-gradient-to-r from-white/5 to-white/0 rounded-xl p-4 md:p-6 border border-purple-500/20">
+                                <div className="flex flex-wrap items-center gap-3 mb-3">
+                                  <span className={`px-3 py-1 rounded-lg text-xs font-bold border ${getRiskColor(f.risk)}`}>{f.risk.toUpperCase()}</span>
+                                  <span className="text-white font-bold text-lg">{f.name}</span>
+                                  <span className="px-2 py-0.5 bg-purple-600/30 text-purple-300 rounded text-xs">{f.type}</span>
+                                  <span className="ml-auto text-2xl font-bold text-white">{f.support[selectedRegion]}%</span>
+                                </div>
+                                <p className="text-purple-200 text-sm mb-3">{f.businessImpact}</p>
+                                <div className="w-full bg-white/10 rounded-full h-3 mb-3">
+                                  <div className={`h-3 rounded-full ${getSupportColor(f.support[selectedRegion])}`} style={{ width: `${f.support[selectedRegion]}%` }} />
+                                </div>
+                                <div className="grid grid-cols-3 gap-3 mb-3">
+                                  <div className="bg-black/30 rounded-lg p-3">
+                                    <p className="text-purple-400 text-xs">Users</p>
+                                    <p className="text-white font-bold">{(f.estimatedUsers / 1000000).toFixed(1)}M</p>
+                                  </div>
+                                  <div className="bg-black/30 rounded-lg p-3">
+                                    <p className="text-purple-400 text-xs">Revenue</p>
+                                    <p className="text-white font-bold">${(f.revenueImpact / 1000).toFixed(0)}K</p>
+                                  </div>
+                                  <div className="bg-black/30 rounded-lg p-3">
+                                    <p className="text-purple-400 text-xs">JIRA</p>
+                                    <p className="text-white font-bold">{f.jiraTickets}</p>
+                                  </div>
+                                </div>
+                                <p className="text-purple-300 text-sm"><strong>Fix:</strong> {f.alternative}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === 'coach' && (
+                  <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-purple-500/20">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                        <Brain className="w-7 h-7 text-white" />
+                      </div>
+                      <div>
+                        <h2 className="text-xl md:text-2xl font-bold text-white">AI Development Coach</h2>
+                        <p className="text-purple-300 text-sm">GPT-4 powered code analysis</p>
+                      </div>
+                    </div>
+                    <textarea placeholder="// Paste your CSS, HTML, or JavaScript code here...&#10;&#10;.modal {&#10;  backdrop-filter: blur(10px);&#10;}&#10;&#10;@container (min-width: 400px) {&#10;  .card { padding: 2rem; }&#10;}" className="w-full h-64 bg-black/60 text-white border border-purple-500/30 rounded-xl px-6 py-4 placeholder-purple-300/50 font-mono text-sm" />
+                    <div className="mt-4 bg-purple-500/10 border border-purple-500/30 rounded-xl p-4">
+                      <h3 className="text-white font-bold mb-2 flex items-center gap-2">
+                        <Sparkles className="w-5 h-5 text-purple-400" />
+                        AI Analysis Demo
+                      </h3>
+                      <p className="text-purple-200 text-sm mb-3">The AI coach would detect non-baseline features in your code and provide:</p>
+                      <ul className="space-y-2 text-purple-300 text-sm">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                          <span>Feature compatibility analysis across 7 regions</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                          <span>Business impact calculation (revenue risk, user impact)</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                          <span>Auto-fix code generation with progressive enhancement</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                          <span>One-click refactoring to baseline-safe alternatives</span>
+                        </li>
+                      </ul>
+                      <button className="mt-4 w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-lg font-bold hover:from-purple-700 hover:to-pink-700 transition-all flex items-center justify-center gap-2">
+                        <Brain className="w-5 h-5" />
+                        Analyze with AI (Demo)
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'database' && (
+                  <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-purple-500/20">
+                    <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+                      <div className="flex items-center gap-3">
+                        <Database className="w-8 h-8 text-purple-400" />
+                        <div>
+                          <h2 className="text-xl md:text-2xl font-bold text-white">Feature Support Matrix</h2>
+                          <p className="text-purple-300 text-sm">Real-time compatibility across 7 regions</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full min-w-[800px]">
+                        <thead>
+                          <tr className="border-b border-purple-500/30">
+                            <th className="text-left text-purple-300 py-4 px-4 font-bold">Feature</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">Type</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">Baseline</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">🌍</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">🇺🇸</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">🇧🇷</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">🇮🇳</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">Risk</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {mockFeatures.map((f, i) => (
+                            <tr key={i} className="border-b border-purple-500/10 hover:bg-white/5">
+                              <td className="py-4 px-4 text-white font-medium">{f.name}</td>
+                              <td className="text-center py-4 px-4">
+                                <span className="px-2 py-1 bg-purple-600/30 text-purple-300 rounded text-xs">{f.type}</span>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                {f.baseline ? <CheckCircle className="w-5 h-5 text-green-400 inline" /> : <XCircle className="w-5 h-5 text-red-400 inline" />}
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <span className={`font-bold ${f.support.global >= 90 ? 'text-green-400' : f.support.global >= 75 ? 'text-yellow-400' : 'text-red-400'}`}>{f.support.global}%</span>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <span className={`font-bold ${f.support.us >= 90 ? 'text-green-400' : f.support.us >= 75 ? 'text-yellow-400' : 'text-red-400'}`}>{f.support.us}%</span>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <span className={`font-bold ${f.support.brazil >= 90 ? 'text-green-400' : f.support.brazil >= 75 ? 'text-yellow-400' : 'text-red-400'}`}>{f.support.brazil}%</span>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <span className={`font-bold ${f.support.india >= 90 ? 'text-green-400' : f.support.india >= 75 ? 'text-yellow-400' : 'text-red-400'}`}>{f.support.india}%</span>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <span className={`px-3 py-1 rounded-lg text-xs font-bold border ${getRiskColor(f.risk)}`}>{f.risk}</span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+                      <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-xl p-4 border border-blue-500/30">
+                        <p className="text-blue-300 text-sm mb-1">Total Features</p>
+                        <p className="text-3xl font-bold text-white">{mockFeatures.length}</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-red-500/20 to-red-600/20 rounded-xl p-4 border border-red-500/30">
+                        <p className="text-red-300 text-sm mb-1">Non-Baseline</p>
+                        <p className="text-3xl font-bold text-white">{mockFeatures.filter(f => !f.baseline).length}</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-xl p-4 border border-green-500/30">
+                        <p className="text-green-300 text-sm mb-1">Auto-Fixable</p>
+                        <p className="text-3xl font-bold text-white">{mockFeatures.filter(f => f.autoFixAvailable).length}</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-xl p-4 border border-purple-500/30">
+                        <p className="text-purple-300 text-sm mb-1">Critical</p>
+                        <p className="text-3xl font-bold text-white">{mockFeatures.filter(f => f.risk === 'critical' || f.risk === 'high').length}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="bg-black/40 backdrop-blur-xl border-t border-purple-500/20 mt-12">
+                <div className="max-w-7xl mx-auto px-6 py-8 text-center">
+                  <div className="flex items-center justify-center gap-2 mb-4">
+                    <Brain className="w-6 h-6 text-purple-400" />
+                    <span className="text-white font-bold text-lg">Baseline Intelligence System</span>
+                    <span className="text-purple-400">v2.5.0</span>
+                  </div>
+                  <p className="text-purple-300 text-sm mb-2">Enterprise AI-Powered Compatibility Platform</p>
+                  <p className="text-purple-400 text-xs">Trusted by Fortune 500 Engineering Teams • SOC 2 Certified • GDPR Compliant</p>
+                  <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-sm text-purple-300">
+                    <span>✓ 73% fewer bugs</span>
+                    <span>•</span>
+                    <span>✓ $450K+ savings</span>
+                    <span>•</span>
+                    <span>✓ 99.7% safe deployments</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<BISEnterprise />);
     </script>
 </body>
 </html>
