@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIS - Baseline Intelligence System | Enterprise Edition</title>
+    <meta name="description" content="AI-Powered Web Compatibility Advisor for Enterprise Teams">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+    
+    <!-- React & Babel -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        }
+        #root { 
+            min-height: 100vh; 
+        }
+        /* Loading animation */
+        .loading-spinner {
+            border: 3px solid rgba(168, 85, 247, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #a855f7;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <!-- Loading state -->
+        <div style="display: flex; align-items: center; justify-content: center; height: 100vh; background: linear-gradient(to bottom right, #0f172a, #581c87, #0f172a);">
+            <div style="text-align: center;">
+                <div class="loading-spinner" style="margin: 0 auto 20px;"></div>
+                <p style="color: #a855f7; font-size: 18px; font-weight: bold;">Loading BIS Enterprise...</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Load the main application -->
+    <script type="text/babel" src="./app.js"></script>
+</body>
+</html>
