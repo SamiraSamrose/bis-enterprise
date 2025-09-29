@@ -3,978 +3,406 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baseline Intelligence System - Enterprise Demo</title>
+    <title>BIS - Baseline Intelligence System | Enterprise Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; }
+        #root { min-height: 100vh; }
+    </style>
 </head>
 <body>
     <div id="root"></div>
     
     <script type="text/babel">
-        // PASTE THE ENTIRE REACT CODE HERE (from the artifact)
-        const { Globe, Code, AlertTriangle, CheckCircle, XCircle, Search, TrendingUp, Map, Zap, Users, DollarSign, Clock, GitBranch, Shield, Database, BarChart3, Activity, Cpu, Download, Upload, Package, Terminal, Brain, Sparkles } = lucide;
+        const { useState, useEffect } = React;
+        
+        // SVG Icons
+        const Globe = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>;
+        const Code = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>;
+        const AlertTriangle = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>;
+        const CheckCircle = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>;
+        const XCircle = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>;
+        const Search = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
+        const Users = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+        const DollarSign = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>;
+        const Clock = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
+        const GitBranch = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>;
+        const Shield = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>;
+        const Database = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>;
+        const BarChart3 = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>;
+        const Activity = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>;
+        const Cpu = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>;
+        const Zap = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
+        const Brain = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>;
+        const Sparkles = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>;
+        const Terminal = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>;
+        const Package = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>;
 
-        import React, { useState, useEffect } from 'react';
-import { Globe, Code, AlertTriangle, CheckCircle, XCircle, Search, TrendingUp, Map, Zap, Users, DollarSign, Clock, GitBranch, Shield, Database, BarChart3, Activity, Cpu, Download, Upload, Package, Terminal, Brain, Sparkles } from 'lucide-react';
-
-const BISEnterprise = () => {
-  const [activeTab, setActiveTab] = useState('analyzer');
-  const [url, setUrl] = useState('');
-  const [selectedRegion, setSelectedRegion] = useState('global');
-  const [analyzing, setAnalyzing] = useState(false);
-  const [results, setResults] = useState(null);
-  const [codeInput, setCodeInput] = useState('');
-  const [coachResponse, setCoachResponse] = useState(null);
-  const [cicdLogs, setCicdLogs] = useState([]);
-  const [realTimeMetrics, setRealTimeMetrics] = useState({
-    activeScans: 1247,
-    issuesBlocked: 89,
-    moneySaved: 450000,
-    deploymentsSafe: 99.7
-  });
-
-  // Simulate real-time updates
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRealTimeMetrics(prev => ({
-        activeScans: prev.activeScans + Math.floor(Math.random() * 10),
-        issuesBlocked: prev.issuesBlocked + Math.floor(Math.random() * 3),
-        moneySaved: prev.moneySaved + Math.floor(Math.random() * 5000),
-        deploymentsSafe: 99.7 + (Math.random() * 0.2 - 0.1)
-      }));
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Enhanced mock feature database with business impact
-  const mockFeatures = [
-    { 
-      name: ':has() CSS Selector', 
-      type: 'CSS', 
-      baseline: false, 
-      support: { global: 73, brazil: 68, india: 65, us: 82, china: 71, japan: 78, germany: 80 }, 
-      risk: 'high',
-      businessImpact: 'High - Affects navigation UX',
-      estimatedUsers: 2400000,
-      revenueImpact: 180000,
-      alternative: 'Use JavaScript querySelector or class-based targeting',
-      autoFixAvailable: true,
-      jiraTickets: 3,
-      lastDetected: '2 hours ago'
-    },
-    { 
-      name: 'backdrop-filter', 
-      type: 'CSS', 
-      baseline: false, 
-      support: { global: 78, brazil: 72, india: 69, us: 85, china: 75, japan: 82, germany: 84 }, 
-      risk: 'medium',
-      businessImpact: 'Medium - Visual degradation',
-      estimatedUsers: 1800000,
-      revenueImpact: 95000,
-      alternative: 'Use solid backgrounds with opacity or PNG overlays',
-      autoFixAvailable: true,
-      jiraTickets: 1,
-      lastDetected: '5 hours ago'
-    },
-    { 
-      name: 'Container Queries', 
-      type: 'CSS', 
-      baseline: false, 
-      support: { global: 71, brazil: 65, india: 62, us: 79, china: 68, japan: 76, germany: 78 }, 
-      risk: 'high',
-      businessImpact: 'Critical - Breaks responsive design',
-      estimatedUsers: 3200000,
-      revenueImpact: 280000,
-      alternative: 'Use media queries with JavaScript resize detection',
-      autoFixAvailable: true,
-      jiraTickets: 5,
-      lastDetected: '1 hour ago'
-    },
-    { 
-      name: 'Web Share API', 
-      type: 'JS', 
-      baseline: false, 
-      support: { global: 82, brazil: 88, india: 85, us: 79, china: 45, japan: 83, germany: 81 }, 
-      risk: 'critical',
-      businessImpact: 'Critical - Viral sharing blocked in China',
-      estimatedUsers: 4500000,
-      revenueImpact: 420000,
-      alternative: 'Fallback to manual copy-to-clipboard or social buttons',
-      autoFixAvailable: true,
-      jiraTickets: 8,
-      lastDetected: '30 minutes ago'
-    },
-    { 
-      name: 'Dynamic Import', 
-      type: 'JS', 
-      baseline: true, 
-      support: { global: 94, brazil: 92, india: 90, us: 96, china: 93, japan: 95, germany: 96 }, 
-      risk: 'low',
-      businessImpact: 'Low - Code splitting working',
-      estimatedUsers: 500000,
-      revenueImpact: 0,
-      alternative: 'None needed - widely supported',
-      autoFixAvailable: false,
-      jiraTickets: 0,
-      lastDetected: '1 day ago'
-    },
-    { 
-      name: 'CSS Grid', 
-      type: 'CSS', 
-      baseline: true, 
-      support: { global: 96, brazil: 95, india: 94, us: 98, china: 96, japan: 97, germany: 98 }, 
-      risk: 'low',
-      businessImpact: 'Low - Layout stable',
-      estimatedUsers: 300000,
-      revenueImpact: 0,
-      alternative: 'None needed - widely supported',
-      autoFixAvailable: false,
-      jiraTickets: 0,
-      lastDetected: '2 days ago'
-    },
-    { 
-      name: 'Subgrid', 
-      type: 'CSS', 
-      baseline: false, 
-      support: { global: 68, brazil: 63, india: 60, us: 75, china: 66, japan: 72, germany: 74 }, 
-      risk: 'high',
-      businessImpact: 'High - Complex layouts broken',
-      estimatedUsers: 2100000,
-      revenueImpact: 165000,
-      alternative: 'Use nested grids with manual alignment',
-      autoFixAvailable: false,
-      jiraTickets: 2,
-      lastDetected: '3 hours ago'
-    },
-    { 
-      name: 'Scroll-driven Animations', 
-      type: 'CSS', 
-      baseline: false, 
-      support: { global: 65, brazil: 58, india: 55, us: 72, china: 62, japan: 69, germany: 71 }, 
-      risk: 'medium',
-      businessImpact: 'Medium - Marketing pages less engaging',
-      estimatedUsers: 1500000,
-      revenueImpact: 75000,
-      alternative: 'Use Intersection Observer + CSS transitions',
-      autoFixAvailable: true,
-      jiraTickets: 1,
-      lastDetected: '4 hours ago'
-    },
-  ];
-
-  const regions = [
-    { id: 'global', name: 'Global', flag: '🌍', marketSize: '8.5B', avgIncome: '$12K' },
-    { id: 'us', name: 'United States', flag: '🇺🇸', marketSize: '331M', avgIncome: '$65K' },
-    { id: 'brazil', name: 'Brazil', flag: '🇧🇷', marketSize: '214M', avgIncome: '$8K' },
-    { id: 'india', name: 'India', flag: '🇮🇳', marketSize: '1.4B', avgIncome: '$2K' },
-    { id: 'china', name: 'China', flag: '🇨🇳', marketSize: '1.4B', avgIncome: '$11K' },
-    { id: 'japan', name: 'Japan', flag: '🇯🇵', marketSize: '125M', avgIncome: '$42K' },
-    { id: 'germany', name: 'Germany', flag: '🇩🇪', marketSize: '83M', avgIncome: '$51K' },
-  ];
-
-  const cicdIntegrations = [
-    { name: 'GitHub Actions', status: 'active', blocked: 12, passed: 847 },
-    { name: 'GitLab CI', status: 'active', blocked: 8, passed: 623 },
-    { name: 'Jenkins', status: 'active', blocked: 15, passed: 1204 },
-    { name: 'CircleCI', status: 'active', blocked: 5, passed: 432 },
-  ];
-
-  const teamMetrics = [
-    { team: 'Frontend Core', issues: 23, critical: 5, resolved: 89, score: 92 },
-    { team: 'Mobile Web', issues: 34, critical: 8, resolved: 76, score: 85 },
-    { team: 'Marketing Pages', issues: 12, critical: 2, resolved: 95, score: 97 },
-    { team: 'Checkout Flow', issues: 45, critical: 12, resolved: 71, score: 78 },
-    { team: 'Dashboard UI', issues: 18, critical: 3, resolved: 88, score: 94 },
-  ];
-
-  const analyzeSite = () => {
-    if (!url) return;
-    setAnalyzing(true);
-    
-    // Simulate deep analysis with multiple phases
-    const phases = [
-      'Crawling pages...',
-      'Extracting CSS features...',
-      'Analyzing JavaScript bundles...',
-      'Cross-referencing browser data...',
-      'Calculating business impact...',
-      'Generating recommendations...'
-    ];
-
-    let currentPhase = 0;
-    const phaseInterval = setInterval(() => {
-      if (currentPhase < phases.length) {
-        setCicdLogs(prev => [...prev, { time: new Date().toLocaleTimeString(), message: phases[currentPhase], type: 'info' }]);
-        currentPhase++;
-      } else {
-        clearInterval(phaseInterval);
-      }
-    }, 300);
-
-    setTimeout(() => {
-      const detectedFeatures = mockFeatures.slice(0, 5);
-      const avgSupport = detectedFeatures.reduce((acc, f) => acc + f.support[selectedRegion], 0) / detectedFeatures.length;
-      const totalRevenueImpact = detectedFeatures.reduce((acc, f) => acc + f.revenueImpact, 0);
-      const totalUsersAffected = detectedFeatures.reduce((acc, f) => acc + f.estimatedUsers, 0);
-      
-      setResults({
-        url,
-        region: selectedRegion,
-        features: detectedFeatures,
-        avgSupport: Math.round(avgSupport),
-        riskScore: avgSupport > 85 ? 'low' : avgSupport > 70 ? 'medium' : 'high',
-        usersAffected: totalUsersAffected,
-        revenueAtRisk: totalRevenueImpact,
-        criticalIssues: detectedFeatures.filter(f => f.risk === 'critical' || f.risk === 'high').length,
-        autoFixable: detectedFeatures.filter(f => f.autoFixAvailable).length,
-        estimatedFixTime: detectedFeatures.length * 2.5,
-        jiraTickets: detectedFeatures.reduce((acc, f) => acc + f.jiraTickets, 0),
-      });
-      
-      setCicdLogs(prev => [...prev, { time: new Date().toLocaleTimeString(), message: '✓ Analysis complete', type: 'success' }]);
-      setAnalyzing(false);
-    }, 2000);
-  };
-
-  const analyzeCode = () => {
-    if (!codeInput) return;
-    
-    // Advanced pattern matching
-    const patterns = [
-      { regex: /backdrop-filter/gi, feature: 'backdrop-filter', type: 'CSS', risk: 'medium' },
-      { regex: /@container/gi, feature: 'Container Queries', type: 'CSS', risk: 'high' },
-      { regex: /:has\(/gi, feature: ':has() selector', type: 'CSS', risk: 'high' },
-      { regex: /navigator\.share/gi, feature: 'Web Share API', type: 'JS', risk: 'critical' },
-      { regex: /animation-timeline/gi, feature: 'Scroll-driven Animations', type: 'CSS', risk: 'medium' },
-      { regex: /subgrid/gi, feature: 'CSS Subgrid', type: 'CSS', risk: 'high' },
-    ];
-
-    let response = {
-      detected: [],
-      recommendations: [],
-      businessImpact: {
-        usersAffected: 0,
-        revenueAtRisk: 0,
-        regions: []
-      }
-    };
-
-    patterns.forEach(pattern => {
-      const matches = codeInput.match(pattern.regex);
-      if (matches) {
-        const featureData = mockFeatures.find(f => f.name.toLowerCase().includes(pattern.feature.toLowerCase()));
-        if (featureData) {
-          response.detected.push(`${pattern.feature} (${pattern.type})`);
-          response.businessImpact.usersAffected += featureData.estimatedUsers;
-          response.businessImpact.revenueAtRisk += featureData.revenueImpact;
-          
-          // Find most affected regions
-          const regionSupport = Object.entries(featureData.support)
-            .filter(([key]) => key !== 'global')
-            .sort(([, a], [, b]) => a - b)
-            .slice(0, 3);
-          
-          response.recommendations.push({
-            feature: pattern.feature,
-            risk: pattern.risk,
-            issue: `Only ${featureData.support[selectedRegion]}% support in ${regions.find(r => r.id === selectedRegion)?.name}`,
-            businessImpact: featureData.businessImpact,
-            usersAffected: featureData.estimatedUsers.toLocaleString(),
-            revenueAtRisk: `$${featureData.revenueAtRisk.toLocaleString()}`,
-            suggestion: featureData.alternative,
-            autoFix: featureData.autoFixAvailable,
-            worstRegions: regionSupport.map(([region, support]) => ({
-              name: regions.find(r => r.id === region)?.name,
-              support
-            })),
-            code: generateCodeFix(pattern.feature, pattern.type)
+        const BISEnterprise = () => {
+          const [activeTab, setActiveTab] = useState('analyzer');
+          const [url, setUrl] = useState('');
+          const [selectedRegion, setSelectedRegion] = useState('global');
+          const [analyzing, setAnalyzing] = useState(false);
+          const [results, setResults] = useState(null);
+          const [cicdLogs, setCicdLogs] = useState([]);
+          const [realTimeMetrics, setRealTimeMetrics] = useState({
+            activeScans: 1247,
+            issuesBlocked: 89,
+            moneySaved: 450000,
+            deploymentsSafe: 99.7
           });
-        }
-      }
-    });
 
-    if (response.detected.length === 0) {
-      response.recommendations.push({
-        feature: 'Code Analysis',
-        risk: 'low',
-        issue: 'No high-risk features detected',
-        businessImpact: 'Code uses baseline-safe features',
-        suggestion: 'Continue following best practices',
-        autoFix: false,
-        code: ''
-      });
-    }
+          useEffect(() => {
+            const interval = setInterval(() => {
+              setRealTimeMetrics(prev => ({
+                activeScans: prev.activeScans + Math.floor(Math.random() * 10),
+                issuesBlocked: prev.issuesBlocked + Math.floor(Math.random() * 3),
+                moneySaved: prev.moneySaved + Math.floor(Math.random() * 5000),
+                deploymentsSafe: 99.7 + (Math.random() * 0.2 - 0.1)
+              }));
+            }, 3000);
+            return () => clearInterval(interval);
+          }, []);
 
-    setCoachResponse(response);
-  };
+          const mockFeatures = [
+            { name: ':has() CSS Selector', type: 'CSS', baseline: false, support: { global: 73, brazil: 68, india: 65, us: 82, china: 71, japan: 78, germany: 80 }, risk: 'high', businessImpact: 'High - Affects navigation UX', estimatedUsers: 2400000, revenueImpact: 180000, alternative: 'Use JavaScript querySelector', autoFixAvailable: true, jiraTickets: 3 },
+            { name: 'backdrop-filter', type: 'CSS', baseline: false, support: { global: 78, brazil: 72, india: 69, us: 85, china: 75, japan: 82, germany: 84 }, risk: 'medium', businessImpact: 'Medium - Visual degradation', estimatedUsers: 1800000, revenueImpact: 95000, alternative: 'Use solid backgrounds with opacity', autoFixAvailable: true, jiraTickets: 1 },
+            { name: 'Container Queries', type: 'CSS', baseline: false, support: { global: 71, brazil: 65, india: 62, us: 79, china: 68, japan: 76, germany: 78 }, risk: 'high', businessImpact: 'Critical - Breaks responsive design', estimatedUsers: 3200000, revenueImpact: 280000, alternative: 'Use ResizeObserver', autoFixAvailable: true, jiraTickets: 5 },
+            { name: 'Web Share API', type: 'JS', baseline: false, support: { global: 82, brazil: 88, india: 85, us: 79, china: 45, japan: 83, germany: 81 }, risk: 'critical', businessImpact: 'Critical - Sharing blocked', estimatedUsers: 4500000, revenueImpact: 420000, alternative: 'Fallback to clipboard', autoFixAvailable: true, jiraTickets: 8 },
+            { name: 'CSS Grid', type: 'CSS', baseline: true, support: { global: 96, brazil: 95, india: 94, us: 98, china: 96, japan: 97, germany: 98 }, risk: 'low', businessImpact: 'Low - Stable', estimatedUsers: 300000, revenueImpact: 0, alternative: 'None needed', autoFixAvailable: false, jiraTickets: 0 },
+          ];
 
-  const generateCodeFix = (feature, type) => {
-    const fixes = {
-      'backdrop-filter': `/* ❌ Non-Baseline */
-.modal {
-  backdrop-filter: blur(10px);
-}
+          const regions = [
+            { id: 'global', name: 'Global', flag: '🌍' },
+            { id: 'us', name: 'United States', flag: '🇺🇸' },
+            { id: 'brazil', name: 'Brazil', flag: '🇧🇷' },
+            { id: 'india', name: 'India', flag: '🇮🇳' },
+            { id: 'china', name: 'China', flag: '🇨🇳' },
+            { id: 'japan', name: 'Japan', flag: '🇯🇵' },
+            { id: 'germany', name: 'Germany', flag: '🇩🇪' },
+          ];
 
-/* ✅ Baseline-Safe Alternative */
-.modal {
-  background: rgba(255, 255, 255, 0.9);
-}
+          const cicdIntegrations = [
+            { name: 'GitHub Actions', status: 'active', blocked: 12, passed: 847 },
+            { name: 'GitLab CI', status: 'active', blocked: 8, passed: 623 },
+            { name: 'Jenkins', status: 'active', blocked: 15, passed: 1204 },
+            { name: 'CircleCI', status: 'active', blocked: 5, passed: 432 },
+          ];
 
-/* ✅ Progressive Enhancement */
-.modal {
-  background: rgba(255, 255, 255, 0.9);
-}
-@supports (backdrop-filter: blur(10px)) {
-  .modal {
-    backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.7);
-  }
-}`,
-      'Container Queries': `/* ❌ Non-Baseline */
-@container (min-width: 400px) {
-  .card { padding: 2rem; }
-}
+          const teamMetrics = [
+            { team: 'Frontend Core', issues: 23, critical: 5, resolved: 89, score: 92 },
+            { team: 'Mobile Web', issues: 34, critical: 8, resolved: 76, score: 85 },
+            { team: 'Marketing Pages', issues: 12, critical: 2, resolved: 95, score: 97 },
+            { team: 'Checkout Flow', issues: 45, critical: 12, resolved: 71, score: 78 },
+            { team: 'Dashboard UI', issues: 18, critical: 3, resolved: 88, score: 94 },
+          ];
 
-/* ✅ Baseline-Safe Alternative */
-const resizeObserver = new ResizeObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.contentRect.width >= 400) {
-      entry.target.classList.add('large');
-    } else {
-      entry.target.classList.remove('large');
-    }
-  });
-});
-document.querySelectorAll('.card').forEach(el => {
-  resizeObserver.observe(el);
-});`,
-      ':has() selector': `/* ❌ Non-Baseline */
-.parent:has(.child) {
-  background: blue;
-}
+          const analyzeSite = () => {
+            if (!url) return;
+            setAnalyzing(true);
+            setCicdLogs([]);
+            
+            const phases = ['Crawling pages...', 'Extracting CSS...', 'Analyzing JavaScript...', 'Cross-referencing data...', 'Calculating impact...', 'Done!'];
+            let idx = 0;
+            
+            const interval = setInterval(() => {
+              if (idx < phases.length) {
+                setCicdLogs(prev => [...prev, { time: new Date().toLocaleTimeString(), msg: phases[idx], type: idx === phases.length - 1 ? 'success' : 'info' }]);
+                idx++;
+              } else {
+                clearInterval(interval);
+              }
+            }, 300);
 
-/* ✅ Baseline-Safe Alternative */
-document.querySelectorAll('.parent').forEach(parent => {
-  if (parent.querySelector('.child')) {
-    parent.classList.add('has-child');
-  }
-});
+            setTimeout(() => {
+              const features = mockFeatures.slice(0, 4);
+              const avg = Math.round(features.reduce((a, f) => a + f.support[selectedRegion], 0) / features.length);
+              setResults({
+                url, features, avgSupport: avg,
+                riskScore: avg > 85 ? 'low' : avg > 70 ? 'medium' : 'high',
+                usersAffected: features.reduce((a, f) => a + f.estimatedUsers, 0),
+                revenueAtRisk: features.reduce((a, f) => a + f.revenueImpact, 0),
+                criticalIssues: features.filter(f => f.risk === 'critical' || f.risk === 'high').length,
+                estimatedFixTime: features.length * 2.5,
+                jiraTickets: features.reduce((a, f) => a + f.jiraTickets, 0),
+              });
+              setAnalyzing(false);
+            }, 2000);
+          };
 
-.parent.has-child {
-  background: blue;
-}`,
-      'Web Share API': `// ❌ Non-Baseline
-navigator.share({ title, text, url });
+          const getRiskColor = (risk) => {
+            const colors = {
+              low: 'text-green-400 bg-green-500/20 border-green-500/30',
+              medium: 'text-yellow-400 bg-yellow-500/20 border-yellow-500/30',
+              high: 'text-orange-400 bg-orange-500/20 border-orange-500/30',
+              critical: 'text-red-400 bg-red-500/20 border-red-500/30'
+            };
+            return colors[risk] || 'text-gray-400 bg-gray-500/20';
+          };
 
-// ✅ Baseline-Safe with Fallback
-async function share(data) {
-  if (navigator.share && navigator.canShare(data)) {
-    try {
-      await navigator.share(data);
-    } catch (err) {
-      fallbackShare(data);
-    }
-  } else {
-    fallbackShare(data);
-  }
-}
+          const getSupportColor = (support) => {
+            if (support >= 90) return 'bg-gradient-to-r from-green-500 to-emerald-500';
+            if (support >= 75) return 'bg-gradient-to-r from-yellow-500 to-orange-500';
+            return 'bg-gradient-to-r from-red-500 to-pink-500';
+          };
 
-function fallbackShare(data) {
-  // Copy to clipboard + show social buttons
-  navigator.clipboard.writeText(data.url);
-  showSocialButtons(data);
-}`
-    };
-    return fixes[feature] || '// Auto-fix not available for this feature';
-  };
-
-  const getRiskColor = (risk) => {
-    switch(risk) {
-      case 'low': return 'text-green-400 bg-green-500/20 border-green-500/30';
-      case 'medium': return 'text-yellow-400 bg-yellow-500/20 border-yellow-500/30';
-      case 'high': return 'text-orange-400 bg-orange-500/20 border-orange-500/30';
-      case 'critical': return 'text-red-400 bg-red-500/20 border-red-500/30';
-      default: return 'text-gray-400 bg-gray-500/20 border-gray-500/30';
-    }
-  };
-
-  const getSupportColor = (support) => {
-    if (support >= 90) return 'bg-gradient-to-r from-green-500 to-emerald-500';
-    if (support >= 75) return 'bg-gradient-to-r from-yellow-500 to-orange-500';
-    return 'bg-gradient-to-r from-red-500 to-pink-500';
-  };
-
-  const exportReport = () => {
-    const report = {
-      timestamp: new Date().toISOString(),
-      url: results?.url,
-      region: selectedRegion,
-      summary: {
-        avgSupport: results?.avgSupport,
-        usersAffected: results?.usersAffected,
-        revenueAtRisk: results?.revenueAtRisk,
-        criticalIssues: results?.criticalIssues
-      },
-      features: results?.features
-    };
-    const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `bis-report-${Date.now()}.json`;
-    a.click();
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
-      {/* Premium Header */}
-      <div className="bg-black/40 backdrop-blur-xl border-b border-purple-500/20 shadow-2xl">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl blur-xl opacity-50"></div>
-                <div className="relative w-14 h-14 bg-gradient-to-br from-purple-600 via-pink-600 to-purple-600 rounded-xl flex items-center justify-center shadow-2xl">
-                  <Brain className="w-8 h-8 text-white" />
-                </div>
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent">
-                  Baseline Intelligence System
-                </h1>
-                <p className="text-purple-300 text-sm flex items-center gap-2">
-                  <Sparkles className="w-3 h-3" />
-                  Enterprise AI-Powered Compatibility Platform
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3">
-              <div className="bg-green-500/20 border border-green-500/30 rounded-lg px-3 py-1.5 flex items-center space-x-2">
-                <Activity className="w-4 h-4 text-green-400 animate-pulse" />
-                <span className="text-green-300 text-sm font-medium">Live</span>
-              </div>
-              <select 
-                value={selectedRegion}
-                onChange={(e) => setSelectedRegion(e.target.value)}
-                className="bg-white/10 text-white border border-purple-500/30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 hover:bg-white/15 transition-all"
-              >
-                {regions.map(r => (
-                  <option key={r.id} value={r.id} className="bg-slate-900">
-                    {r.flag} {r.name} ({r.marketSize})
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Real-time Metrics Banner */}
-      <div className="bg-gradient-to-r from-purple-900/30 via-pink-900/30 to-purple-900/30 border-b border-purple-500/20">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="grid grid-cols-4 gap-6">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                <Cpu className="w-5 h-5 text-blue-400" />
-              </div>
-              <div>
-                <p className="text-xs text-purple-300">Active Scans</p>
-                <p className="text-lg font-bold text-white">{realTimeMetrics.activeScans.toLocaleString()}</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center">
-                <Shield className="w-5 h-5 text-red-400" />
-              </div>
-              <div>
-                <p className="text-xs text-purple-300">Issues Blocked</p>
-                <p className="text-lg font-bold text-white">{realTimeMetrics.issuesBlocked}</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
-                <DollarSign className="w-5 h-5 text-green-400" />
-              </div>
-              <div>
-                <p className="text-xs text-purple-300">Revenue Protected</p>
-                <p className="text-lg font-bold text-white">${(realTimeMetrics.moneySaved / 1000).toFixed(0)}K</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                <CheckCircle className="w-5 h-5 text-purple-400" />
-              </div>
-              <div>
-                <p className="text-xs text-purple-300">Safe Deployments</p>
-                <p className="text-lg font-bold text-white">{realTimeMetrics.deploymentsSafe.toFixed(1)}%</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Enhanced Tabs */}
-      <div className="max-w-7xl mx-auto px-6 mt-6">
-        <div className="flex space-x-2 bg-black/30 p-1.5 rounded-xl backdrop-blur-xl border border-purple-500/20">
-          {[
-            { id: 'analyzer', icon: Search, label: 'Site Analyzer', badge: results?.criticalIssues },
-            { id: 'coach', icon: Brain, label: 'AI Dev Coach', badge: null },
-            { id: 'cicd', icon: GitBranch, label: 'CI/CD Integration', badge: 4 },
-            { id: 'teams', icon: Users, label: 'Team Dashboard', badge: null },
-            { id: 'database', icon: Database, label: 'Feature Database', badge: mockFeatures.filter(f => !f.baseline).length }
-          ].map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`relative flex-1 px-4 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
-                activeTab === tab.id
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/50'
-                  : 'text-purple-300 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              <tab.icon className="w-4 h-4" />
-              {tab.label}
-              {tab.badge && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                  {tab.badge}
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        {activeTab === 'analyzer' && (
-          <div className="space-y-6">
-            {/* Enhanced Input Section */}
-            <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-purple-500/20 shadow-2xl">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h2 className="text-2xl font-bold text-white">Deep Site Analysis</h2>
-                  <p className="text-purple-300 text-sm mt-1">AI-powered crawler with business impact modeling</p>
-                </div>
-                {results && (
-                  <button
-                    onClick={exportReport}
-                    className="flex items-center gap-2 bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 px-4 py-2 rounded-lg border border-purple-500/30 transition-all"
-                  >
-                    <Download className="w-4 h-4" />
-                    Export Report
-                  </button>
-                )}
-              </div>
-              <div className="flex space-x-3">
-                <input
-                  type="text"
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  placeholder="https://your-production-site.com"
-                  className="flex-1 bg-white/10 text-white border border-purple-500/30 rounded-xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-purple-300/50 text-lg"
-                />
-                <button
-                  onClick={analyzeSite}
-                  disabled={analyzing || !url}
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-10 py-4 rounded-xl font-bold hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-purple-500/50 flex items-center gap-2"
-                >
-                  {analyzing ? (
-                    <>
-                      <Activity className="w-5 h-5 animate-spin" />
-                      Analyzing...
-                    </>
-                  ) : (
-                    <>
-                      <Zap className="w-5 h-5" />
-                      Analyze
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {/* Live Logs */}
-            {analyzing && cicdLogs.length > 0 && (
-              <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 border border-purple-500/20">
-                <div className="flex items-center gap-2 mb-4">
-                  <Terminal className="w-5 h-5 text-green-400" />
-                  <h3 className="text-white font-bold">Live Analysis Log</h3>
-                </div>
-                <div className="bg-black/60 rounded-lg p-4 font-mono text-sm space-y-1 max-h-40 overflow-y-auto">
-                  {cicdLogs.map((log, idx) => (
-                    <div key={idx} className={`${log.type === 'success' ? 'text-green-400' : 'text-purple-300'}`}>
-                      <span className="text-purple-500">[{log.time}]</span> {log.message}
+          return (
+            <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
+              <div className="bg-black/40 backdrop-blur-xl border-b border-purple-500/20">
+                <div className="max-w-7xl mx-auto px-6 py-4">
+                  <div className="flex items-center justify-between flex-wrap gap-4">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl blur-xl opacity-50"></div>
+                        <div className="relative w-14 h-14 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center">
+                          <Brain className="w-8 h-8 text-white" />
+                        </div>
+                      </div>
+                      <div>
+                        <h1 className="text-2xl font-bold bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent">Baseline Intelligence System</h1>
+                        <p className="text-purple-300 text-sm flex items-center gap-2"><Sparkles className="w-3 h-3" />Enterprise AI Platform</p>
+                      </div>
                     </div>
+                    <select value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)} className="bg-white/10 text-white border border-purple-500/30 rounded-lg px-4 py-2">
+                      {regions.map(r => <option key={r.id} value={r.id} className="bg-slate-900">{r.flag} {r.name}</option>)}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-purple-900/30 via-pink-900/30 to-purple-900/30 border-b border-purple-500/20">
+                <div className="max-w-7xl mx-auto px-6 py-4">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="flex items-center space-x-3">
+                      <Cpu className="w-10 h-10 text-blue-400 p-2 bg-blue-500/20 rounded-lg flex-shrink-0" />
+                      <div><p className="text-xs text-purple-300">Active Scans</p><p className="text-lg font-bold text-white">{realTimeMetrics.activeScans.toLocaleString()}</p></div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Shield className="w-10 h-10 text-red-400 p-2 bg-red-500/20 rounded-lg flex-shrink-0" />
+                      <div><p className="text-xs text-purple-300">Issues Blocked</p><p className="text-lg font-bold text-white">{realTimeMetrics.issuesBlocked}</p></div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <DollarSign className="w-10 h-10 text-green-400 p-2 bg-green-500/20 rounded-lg flex-shrink-0" />
+                      <div><p className="text-xs text-purple-300">Revenue</p><p className="text-lg font-bold text-white">${(realTimeMetrics.moneySaved / 1000).toFixed(0)}K</p></div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <CheckCircle className="w-10 h-10 text-purple-400 p-2 bg-purple-500/20 rounded-lg flex-shrink-0" />
+                      <div><p className="text-xs text-purple-300">Safe Deploy</p><p className="text-lg font-bold text-white">{realTimeMetrics.deploymentsSafe.toFixed(1)}%</p></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="max-w-7xl mx-auto px-6 mt-6">
+                <div className="flex flex-wrap gap-2 bg-black/30 p-1.5 rounded-xl backdrop-blur-xl border border-purple-500/20">
+                  {[
+                    { id: 'analyzer', icon: Search, label: 'Site Analyzer' },
+                    { id: 'coach', icon: Brain, label: 'AI Coach' },
+                    { id: 'cicd', icon: GitBranch, label: 'CI/CD' },
+                    { id: 'teams', icon: Users, label: 'Teams' },
+                    { id: 'database', icon: Database, label: 'Feature DB' }
+                  ].map(tab => (
+                    <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex-1 min-w-[100px] px-3 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 text-sm ${activeTab === tab.id ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : 'text-purple-300'}`}>
+                      <tab.icon className="w-4 h-4" />{tab.label}
+                    </button>
                   ))}
                 </div>
               </div>
-            )}
 
-            {/* Enhanced Results */}
-            {results && (
-              <div className="space-y-6">
-                {/* Executive Summary Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 backdrop-blur-xl rounded-2xl p-6 border border-blue-500/30 shadow-xl">
-                    <div className="flex items-center justify-between mb-3">
-                      <BarChart3 className="w-8 h-8 text-blue-400" />
-                      <span className={`px-3 py-1 rounded-full text-xs font-bold ${getSupportColor(results.avgSupport)} text-white`}>
-                        {results.avgSupport}%
-                      </span>
+              <div className="max-w-7xl mx-auto px-6 py-8">
+                {activeTab === 'analyzer' && (
+                  <div className="space-y-6">
+                    <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-purple-500/20">
+                      <h2 className="text-xl md:text-2xl font-bold text-white mb-4">Deep Site Analysis</h2>
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://your-site.com" className="flex-1 bg-white/10 text-white border border-purple-500/30 rounded-xl px-6 py-4" />
+                        <button onClick={analyzeSite} disabled={analyzing || !url} className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-xl font-bold disabled:opacity-50 transition-all flex items-center justify-center gap-2 whitespace-nowrap">
+                          {analyzing ? <><Activity className="w-5 h-5 animate-spin" />Analyzing...</> : <><Zap className="w-5 h-5" />Analyze</>}
+                        </button>
+                      </div>
                     </div>
-                    <p className="text-blue-300 text-sm mb-1">Compatibility Score</p>
-                    <p className="text-3xl font-bold text-white">{results.avgSupport}%</p>
-                    <p className="text-blue-200 text-xs mt-2">Across {regions.find(r => r.id === selectedRegion)?.name}</p>
-                  </div>
 
-                  <div className="bg-gradient-to-br from-red-500/20 to-red-600/20 backdrop-blur-xl rounded-2xl p-6 border border-red-500/30 shadow-xl">
-                    <div className="flex items-center justify-between mb-3">
-                      <Users className="w-8 h-8 text-red-400" />
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-red-500/40 text-white">
-                        CRITICAL
-                      </span>
-                    </div>
-                    <p className="text-red-300 text-sm mb-1">Users Affected</p>
-                    <p className="text-3xl font-bold text-white">{(results.usersAffected / 1000000).toFixed(1)}M</p>
-                    <p className="text-red-200 text-xs mt-2">{results.criticalIssues} critical issues found</p>
-                  </div>
-
-                  <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 backdrop-blur-xl rounded-2xl p-6 border border-green-500/30 shadow-xl">
-                    <div className="flex items-center justify-between mb-3">
-                      <DollarSign className="w-8 h-8 text-green-400" />
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-yellow-500/40 text-white">
-                        REVENUE
-                      </span>
-                    </div>
-                    <p className="text-green-300 text-sm mb-1">Revenue at Risk</p>
-                    <p className="text-3xl font-bold text-white">${(results.revenueAtRisk / 1000).toFixed(0)}K</p>
-                    <p className="text-green-200 text-xs mt-2">Annual estimated impact</p>
-                  </div>
-
-                  <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur-xl rounded-2xl p-6 border border-purple-500/30 shadow-xl">
-                    <div className="flex items-center justify-between mb-3">
-                      <Clock className="w-8 h-8 text-purple-400" />
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-green-500/40 text-white">
-                        {results.autoFixable} AUTO-FIX
-                      </span>
-                    </div>
-                    <p className="text-purple-300 text-sm mb-1">Estimated Fix Time</p>
-                    <p className="text-3xl font-bold text-white">{results.estimatedFixTime}h</p>
-                    <p className="text-purple-200 text-xs mt-2">{results.jiraTickets} JIRA tickets created</p>
-                  </div>
-                </div>
-
-                {/* Feature Breakdown with Business Context */}
-                <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-purple-500/20 shadow-2xl">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-2xl font-bold text-white">Feature Impact Analysis</h3>
-                    <div className="flex gap-2">
-                      <span className="px-3 py-1 rounded-lg text-xs font-medium bg-red-500/20 text-red-300 border border-red-500/30">
-                        {results.features.filter(f => f.risk === 'critical' || f.risk === 'high').length} High Risk
-                      </span>
-                      <span className="px-3 py-1 rounded-lg text-xs font-medium bg-green-500/20 text-green-300 border border-green-500/30">
-                        {results.features.filter(f => f.autoFixAvailable).length} Auto-Fixable
-                      </span>
-                    </div>
-                  </div>
-                  <div className="space-y-4">
-                    {results.features.map((feature, idx) => (
-                      <div key={idx} className="bg-gradient-to-r from-white/5 to-white/0 rounded-xl p-6 border border-purple-500/20 hover:border-purple-500/40 transition-all">
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-2">
-                              <span className={`px-3 py-1 rounded-lg text-xs font-bold border ${getRiskColor(feature.risk)}`}>
-                                {feature.risk.toUpperCase()}
-                              </span>
-                              <span className="text-white font-bold text-lg">{feature.name}</span>
-                              <span className="px-2 py-0.5 bg-purple-600/30 text-purple-300 rounded text-xs">{feature.type}</span>
-                              {feature.autoFixAvailable && (
-                                <span className="px-2 py-0.5 bg-green-600/30 text-green-300 rounded text-xs flex items-center gap-1">
-                                  <Zap className="w-3 h-3" />
-                                  AUTO-FIX
-                                </span>
-                              )}
+                    {analyzing && cicdLogs.length > 0 && (
+                      <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 border border-purple-500/20">
+                        <div className="flex items-center gap-2 mb-4">
+                          <Terminal className="w-5 h-5 text-green-400" />
+                          <h3 className="text-white font-bold">Live Log</h3>
+                        </div>
+                        <div className="bg-black/60 rounded-lg p-4 font-mono text-sm space-y-1 max-h-40 overflow-y-auto">
+                          {cicdLogs.map((log, i) => (
+                            <div key={i} className={log.type === 'success' ? 'text-green-400' : 'text-purple-300'}>
+                              <span className="text-purple-500">[{log.time}]</span> {log.msg}
                             </div>
-                            <p className="text-purple-200 text-sm mb-3">{feature.businessImpact}</p>
-                            
-                            <div className="grid grid-cols-3 gap-4 mb-3">
-                              <div className="bg-black/30 rounded-lg p-3">
-                                <p className="text-purple-400 text-xs mb-1">Support Rate</p>
-                                <p className="text-white font-bold text-xl">{feature.support[selectedRegion]}%</p>
-                              </div>
-                              <div className="bg-black/30 rounded-lg p-3">
-                                <p className="text-purple-400 text-xs mb-1">Users Affected</p>
-                                <p className="text-white font-bold text-xl">{(feature.estimatedUsers / 1000000).toFixed(1)}M</p>
-                              </div>
-                              <div className="bg-black/30 rounded-lg p-3">
-                                <p className="text-purple-400 text-xs mb-1">Revenue Impact</p>
-                                <p className="text-white font-bold text-xl">${(feature.revenueImpact / 1000).toFixed(0)}K</p>
-                              </div>
-                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
-                            <div className="w-full bg-white/10 rounded-full h-3 mb-3">
-                              <div
-                                className={`h-3 rounded-full ${getSupportColor(feature.support[selectedRegion])} shadow-lg`}
-                                style={{ width: `${feature.support[selectedRegion]}%` }}
-                              />
-                            </div>
-                            
-                            <div className="flex items-center justify-between text-sm">
-                              <p className="text-purple-300">
-                                <strong className="text-purple-200">Fix:</strong> {feature.alternative}
-                              </p>
-                              <div className="flex items-center gap-3 text-xs">
-                                <span className="text-purple-400">{feature.jiraTickets} JIRA tickets</span>
-                                <span className="text-purple-500">•</span>
-                                <span className="text-purple-400">Detected {feature.lastDetected}</span>
+                    {results && (
+                      <div className="space-y-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                          <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl p-6 border border-blue-500/30">
+                            <BarChart3 className="w-8 h-8 text-blue-400 mb-3" />
+                            <p className="text-blue-300 text-sm">Compatibility</p>
+                            <p className="text-3xl font-bold text-white">{results.avgSupport}%</p>
+                          </div>
+                          <div className="bg-gradient-to-br from-red-500/20 to-red-600/20 rounded-2xl p-6 border border-red-500/30">
+                            <Users className="w-8 h-8 text-red-400 mb-3" />
+                            <p className="text-red-300 text-sm">Users Affected</p>
+                            <p className="text-3xl font-bold text-white">{(results.usersAffected / 1000000).toFixed(1)}M</p>
+                          </div>
+                          <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-2xl p-6 border border-green-500/30">
+                            <DollarSign className="w-8 h-8 text-green-400 mb-3" />
+                            <p className="text-green-300 text-sm">Revenue Risk</p>
+                            <p className="text-3xl font-bold text-white">${(results.revenueAtRisk / 1000).toFixed(0)}K</p>
+                          </div>
+                          <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl p-6 border border-purple-500/30">
+                            <Clock className="w-8 h-8 text-purple-400 mb-3" />
+                            <p className="text-purple-300 text-sm">Fix Time</p>
+                            <p className="text-3xl font-bold text-white">{results.estimatedFixTime}h</p>
+                          </div>
+                        </div>
+
+                        <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-purple-500/20">
+                          <h3 className="text-xl md:text-2xl font-bold text-white mb-6">Detected Features</h3>
+                          <div className="space-y-4">
+                            {results.features.map((f, i) => (
+                              <div key={i} className="bg-gradient-to-r from-white/5 to-white/0 rounded-xl p-4 md:p-6 border border-purple-500/20">
+                                <div className="flex flex-wrap items-center gap-3 mb-3">
+                                  <span className={`px-3 py-1 rounded-lg text-xs font-bold border ${getRiskColor(f.risk)}`}>{f.risk.toUpperCase()}</span>
+                                  <span className="text-white font-bold text-lg">{f.name}</span>
+                                  <span className="px-2 py-0.5 bg-purple-600/30 text-purple-300 rounded text-xs">{f.type}</span>
+                                  <span className="ml-auto text-2xl font-bold text-white">{f.support[selectedRegion]}%</span>
+                                </div>
+                                <p className="text-purple-200 text-sm mb-3">{f.businessImpact}</p>
+                                <div className="w-full bg-white/10 rounded-full h-3 mb-3">
+                                  <div className={`h-3 rounded-full ${getSupportColor(f.support[selectedRegion])}`} style={{ width: `${f.support[selectedRegion]}%` }} />
+                                </div>
+                                <div className="grid grid-cols-3 gap-3 mb-3">
+                                  <div className="bg-black/30 rounded-lg p-3">
+                                    <p className="text-purple-400 text-xs">Users</p>
+                                    <p className="text-white font-bold">{(f.estimatedUsers / 1000000).toFixed(1)}M</p>
+                                  </div>
+                                  <div className="bg-black/30 rounded-lg p-3">
+                                    <p className="text-purple-400 text-xs">Revenue</p>
+                                    <p className="text-white font-bold">${(f.revenueImpact / 1000).toFixed(0)}K</p>
+                                  </div>
+                                  <div className="bg-black/30 rounded-lg p-3">
+                                    <p className="text-purple-400 text-xs">JIRA</p>
+                                    <p className="text-white font-bold">{f.jiraTickets}</p>
+                                  </div>
+                                </div>
+                                <p className="text-purple-300 text-sm"><strong>Fix:</strong> {f.alternative}</p>
                               </div>
-                            </div>
+                            ))}
                           </div>
                         </div>
                       </div>
-                    ))}
+                    )}
                   </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
+                )}
 
-        {activeTab === 'coach' && (
-          <div className="space-y-6">
-            <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-purple-500/20 shadow-2xl">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
-                  <Brain className="w-7 h-7 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-white">AI Development Coach</h2>
-                  <p className="text-purple-300 text-sm">GPT-4 powered code analysis with auto-fix suggestions</p>
-                </div>
-              </div>
-              <textarea
-                value={codeInput}
-                onChange={(e) => setCodeInput(e.target.value)}
-                placeholder="// Paste your CSS, HTML, or JavaScript code here...
-// Example:
-.modal {
-  backdrop-filter: blur(10px);
-}
-
-@container (min-width: 400px) {
-  .card { padding: 2rem; }
-}"
-                className="w-full h-64 bg-black/60 text-white border border-purple-500/30 rounded-xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-purple-300/50 font-mono text-sm"
-              />
-              <div className="flex items-center justify-between mt-4">
-                <div className="flex gap-2">
-                  <button className="px-4 py-2 bg-white/5 text-purple-300 rounded-lg border border-purple-500/30 hover:bg-white/10 transition-all text-sm">
-                    Load Sample
-                  </button>
-                  <button className="px-4 py-2 bg-white/5 text-purple-300 rounded-lg border border-purple-500/30 hover:bg-white/10 transition-all text-sm">
-                    Clear
-                  </button>
-                </div>
-                <button
-                  onClick={analyzeCode}
-                  disabled={!codeInput}
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-3 rounded-xl font-bold hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-purple-500/50 flex items-center gap-2"
-                >
-                  <Brain className="w-5 h-5" />
-                  Analyze with AI
-                </button>
-              </div>
-            </div>
-
-            {coachResponse && (
-              <div className="space-y-6">
-                {/* Business Impact Summary */}
-                {coachResponse.businessImpact.usersAffected > 0 && (
-                  <div className="bg-gradient-to-r from-red-500/20 to-orange-500/20 backdrop-blur-xl rounded-2xl p-6 border border-red-500/30">
-                    <div className="flex items-center gap-3 mb-4">
-                      <AlertTriangle className="w-8 h-8 text-red-400" />
+                {activeTab === 'coach' && (
+                  <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-purple-500/20">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                        <Brain className="w-7 h-7 text-white" />
+                      </div>
                       <div>
-                        <h3 className="text-xl font-bold text-white">Critical Business Impact Detected</h3>
-                        <p className="text-red-200 text-sm">Your code affects revenue and user experience</p>
+                        <h2 className="text-xl md:text-2xl font-bold text-white">AI Development Coach</h2>
+                        <p className="text-purple-300 text-sm">GPT-4 powered code analysis with auto-fix</p>
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-black/30 rounded-lg p-4">
-                        <p className="text-red-300 text-sm mb-1">Total Users Affected</p>
-                        <p className="text-3xl font-bold text-white">{(coachResponse.businessImpact.usersAffected / 1000000).toFixed(1)}M</p>
-                      </div>
-                      <div className="bg-black/30 rounded-lg p-4">
-                        <p className="text-orange-300 text-sm mb-1">Annual Revenue at Risk</p>
-                        <p className="text-3xl font-bold text-white">${(coachResponse.businessImpact.revenueAtRisk / 1000).toFixed(0)}K</p>
-                      </div>
+                    <textarea placeholder="// Paste your CSS, HTML, or JavaScript code here...&#10;&#10;.modal {&#10;  backdrop-filter: blur(10px);&#10;}&#10;&#10;@container (min-width: 400px) {&#10;  .card { padding: 2rem; }&#10;}" className="w-full h-64 bg-black/60 text-white border border-purple-500/30 rounded-xl px-6 py-4 placeholder-purple-300/50 font-mono text-sm" />
+                    <div className="mt-4 bg-purple-500/10 border border-purple-500/30 rounded-xl p-4">
+                      <h3 className="text-white font-bold mb-2 flex items-center gap-2">
+                        <Sparkles className="w-5 h-5 text-purple-400" />
+                        AI Analysis Features
+                      </h3>
+                      <p className="text-purple-200 text-sm mb-3">The AI coach analyzes your code and provides:</p>
+                      <ul className="space-y-2 text-purple-300 text-sm">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                          <span>Feature compatibility analysis across 7 global regions</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                          <span>Business impact calculation (revenue risk, affected users)</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                          <span>Auto-fix code generation with progressive enhancement</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                          <span>One-click refactoring to baseline-safe alternatives</span>
+                        </li>
+                      </ul>
+                      <button className="mt-4 w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-lg font-bold hover:from-purple-700 hover:to-pink-700 transition-all flex items-center justify-center gap-2">
+                        <Brain className="w-5 h-5" />
+                        Analyze with AI
+                      </button>
                     </div>
                   </div>
                 )}
 
-                {/* AI Recommendations */}
-                <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-purple-500/20 shadow-2xl">
-                  <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                    <Sparkles className="w-6 h-6 text-purple-400" />
-                    AI Recommendations
-                  </h3>
-                  {coachResponse.detected.length > 0 && (
-                    <div className="mb-6">
-                      <p className="text-purple-300 mb-3 font-medium">Detected Non-Baseline Features:</p>
-                      <div className="flex flex-wrap gap-2">
-                        {coachResponse.detected.map((feat, idx) => (
-                          <span key={idx} className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg text-sm font-medium shadow-lg">
-                            {feat}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
+                {activeTab === 'cicd' && (
                   <div className="space-y-6">
-                    {coachResponse.recommendations.map((rec, idx) => (
-                      <div key={idx} className="bg-gradient-to-r from-white/5 to-white/0 rounded-xl p-6 border border-purple-500/20">
-                        <div className="flex items-center justify-between mb-4">
-                          <h4 className="text-xl font-bold text-white flex items-center gap-2">
-                            <Code className="w-5 h-5 text-purple-400" />
-                            {rec.feature}
-                          </h4>
-                          <div className="flex items-center gap-2">
-                            {rec.autoFix && (
-                              <span className="px-3 py-1 bg-green-500/20 text-green-300 rounded-lg text-xs font-bold border border-green-500/30 flex items-center gap-1">
-                                <Zap className="w-3 h-3" />
-                                AUTO-FIX AVAILABLE
-                              </span>
-                            )}
-                            <span className={`px-3 py-1 rounded-lg text-xs font-bold border ${getRiskColor(rec.risk)}`}>
-                              {rec.risk.toUpperCase()} RISK
-                            </span>
+                    <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-purple-500/20">
+                      <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+                        <div className="flex items-center gap-3">
+                          <GitBranch className="w-8 h-8 text-purple-400" />
+                          <div>
+                            <h2 className="text-2xl font-bold text-white">CI/CD Pipeline Integration</h2>
+                            <p className="text-purple-300 text-sm">Real-time compatibility checks in your workflow</p>
                           </div>
                         </div>
+                        <button className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-all flex items-center gap-2">
+                          <Package className="w-4 h-4" />
+                          Install Plugin
+                        </button>
+                      </div>
 
-                        {rec.usersAffected && (
-                          <div className="grid grid-cols-3 gap-3 mb-4">
-                            <div className="bg-black/40 rounded-lg p-3">
-                              <p className="text-purple-400 text-xs mb-1">Users Affected</p>
-                              <p className="text-white font-bold">{rec.usersAffected}</p>
-                            </div>
-                            <div className="bg-black/40 rounded-lg p-3">
-                              <p className="text-purple-400 text-xs mb-1">Revenue at Risk</p>
-                              <p className="text-white font-bold">{rec.revenueAtRisk}</p>
-                            </div>
-                            <div className="bg-black/40 rounded-lg p-3">
-                              <p className="text-purple-400 text-xs mb-1">Business Impact</p>
-                              <p className="text-white font-bold text-xs">{rec.businessImpact}</p>
-                            </div>
-                          </div>
-                        )}
-
-                        <div className="mb-4">
-                          <p className="text-yellow-300 text-sm mb-2 flex items-center gap-2">
-                            <AlertTriangle className="w-4 h-4" />
-                            <strong>Issue:</strong> {rec.issue}
-                          </p>
-                          <p className="text-purple-200 text-sm mb-3 flex items-center gap-2">
-                            <Sparkles className="w-4 h-4 text-purple-400" />
-                            <strong className="text-purple-300">AI Suggestion:</strong> {rec.suggestion}
-                          </p>
-
-                          {rec.worstRegions && rec.worstRegions.length > 0 && (
-                            <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3 mb-3">
-                              <p className="text-red-300 text-xs font-bold mb-2">⚠️ WORST AFFECTED REGIONS:</p>
-                              <div className="flex gap-3">
-                                {rec.worstRegions.map((region, ridx) => (
-                                  <div key={ridx} className="flex items-center gap-2">
-                                    <span className="text-white text-sm">{region.name}</span>
-                                    <span className="text-red-400 font-bold text-sm">{region.support}%</span>
-                                  </div>
-                                ))}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                        {cicdIntegrations.map((integration, idx) => (
+                          <div key={idx} className="bg-gradient-to-r from-white/5 to-white/0 rounded-xl p-6 border border-purple-500/20">
+                            <div className="flex items-center justify-between mb-4">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-purple-600/30 rounded-lg flex items-center justify-center">
+                                  <GitBranch className="w-5 h-5 text-purple-400" />
+                                </div>
+                                <div>
+                                  <h3 className="text-white font-bold">{integration.name}</h3>
+                                  <span className="text-xs text-green-400 flex items-center gap-1">
+                                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                                    {integration.status}
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                          )}
-                        </div>
-
-                        {rec.code && (
-                          <div>
-                            <div className="flex items-center justify-between mb-2">
-                              <p className="text-purple-300 text-sm font-bold">Code Fix:</p>
-                              {rec.autoFix && (
-                                <button className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded-lg text-xs font-bold transition-all flex items-center gap-1">
-                                  <Zap className="w-3 h-3" />
-                                  Apply Auto-Fix
-                                </button>
-                              )}
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="bg-red-500/10 rounded-lg p-3 border border-red-500/30">
+                                <p className="text-red-400 text-xs mb-1">Blocked PRs</p>
+                                <p className="text-white font-bold text-xl">{integration.blocked}</p>
+                              </div>
+                              <div className="bg-green-500/10 rounded-lg p-3 border border-green-500/30">
+                                <p className="text-green-400 text-xs mb-1">Passed</p>
+                                <p className="text-white font-bold text-xl">{integration.passed}</p>
+                              </div>
                             </div>
-                            <pre className="bg-black/80 text-green-300 p-4 rounded-lg text-xs overflow-x-auto border border-green-500/20 font-mono leading-relaxed">
-{rec.code}
-                            </pre>
                           </div>
-                        )}
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
 
-        {activeTab === 'cicd' && (
-          <div className="space-y-6">
-            <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-purple-500/20 shadow-2xl">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <GitBranch className="w-8 h-8 text-purple-400" />
-                  <div>
-                    <h2 className="text-2xl font-bold text-white">CI/CD Pipeline Integration</h2>
-                    <p className="text-purple-300 text-sm">Real-time compatibility checks in your workflow</p>
-                  </div>
-                </div>
-                <button className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-all flex items-center gap-2">
-                  <Package className="w-4 h-4" />
-                  Install Plugin
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                {cicdIntegrations.map((integration, idx) => (
-                  <div key={idx} className="bg-gradient-to-r from-white/5 to-white/0 rounded-xl p-6 border border-purple-500/20">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-purple-600/30 rounded-lg flex items-center justify-center">
-                          <GitBranch className="w-5 h-5 text-purple-400" />
-                        </div>
-                        <div>
-                          <h3 className="text-white font-bold">{integration.name}</h3>
-                          <span className="text-xs text-green-400 flex items-center gap-1">
-                            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                            {integration.status}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="bg-red-500/10 rounded-lg p-3 border border-red-500/30">
-                        <p className="text-red-400 text-xs mb-1">Blocked PRs</p>
-                        <p className="text-white font-bold text-xl">{integration.blocked}</p>
-                      </div>
-                      <div className="bg-green-500/10 rounded-lg p-3 border border-green-500/30">
-                        <p className="text-green-400 text-xs mb-1">Passed</p>
-                        <p className="text-white font-bold text-xl">{integration.passed}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="bg-black/60 rounded-xl p-6 border border-purple-500/20">
-                <h3 className="text-white font-bold mb-4 flex items-center gap-2">
-                  <Terminal className="w-5 h-5 text-green-400" />
-                  Sample CI/CD Configuration
-                </h3>
-                <pre className="bg-black/80 text-green-300 p-4 rounded-lg text-xs overflow-x-auto font-mono leading-relaxed">
+                      <div className="bg-black/60 rounded-xl p-6 border border-purple-500/20">
+                        <h3 className="text-white font-bold mb-4 flex items-center gap-2">
+                          <Terminal className="w-5 h-5 text-green-400" />
+                          Sample CI/CD Configuration
+                        </h3>
+                        <pre className="bg-black/80 text-green-300 p-4 rounded-lg text-xs overflow-x-auto font-mono leading-relaxed">
 {`# .github/workflows/bis-check.yml
 name: Baseline Intelligence Check
 
@@ -1002,303 +430,187 @@ jobs:
           script: |
             github.rest.issues.createComment({
               issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '⚠️ BIS detected non-baseline features. Check the logs for auto-fix suggestions.'
+              body: '⚠️ BIS detected non-baseline features'
             })`}
-                </pre>
-              </div>
-            </div>
-          </div>
-        )}
+                        </pre>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-        {activeTab === 'teams' && (
-          <div className="space-y-6">
-            <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-purple-500/20 shadow-2xl">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <Users className="w-8 h-8 text-purple-400" />
-                  <div>
-                    <h2 className="text-2xl font-bold text-white">Team Compatibility Dashboard</h2>
-                    <p className="text-purple-300 text-sm">Track feature usage and quality scores across teams</p>
+                {activeTab === 'teams' && (
+                  <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-purple-500/20">
+                    <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+                      <div className="flex items-center gap-3">
+                        <Users className="w-8 h-8 text-purple-400" />
+                        <div>
+                          <h2 className="text-2xl font-bold text-white">Team Compatibility Dashboard</h2>
+                          <p className="text-purple-300 text-sm">Track feature usage and quality scores across teams</p>
+                        </div>
+                      </div>
+                      <select className="bg-white/10 text-white border border-purple-500/30 rounded-lg px-4 py-2">
+                        <option>Last 7 Days</option>
+                        <option>Last 30 Days</option>
+                        <option>Last Quarter</option>
+                      </select>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                      <table className="w-full min-w-[600px]">
+                        <thead>
+                          <tr className="border-b border-purple-500/30">
+                            <th className="text-left text-purple-300 py-4 px-4 font-bold">Team</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">Issues</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">Critical</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">Resolved</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">Score</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {teamMetrics.map((team, idx) => (
+                            <tr key={idx} className="border-b border-purple-500/10 hover:bg-white/5 transition-colors">
+                              <td className="py-4 px-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center text-white font-bold">
+                                    {team.team.charAt(0)}
+                                  </div>
+                                  <span className="text-white font-medium">{team.team}</span>
+                                </div>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <span className="text-white font-bold text-lg">{team.issues}</span>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <span className="px-3 py-1 bg-red-500/20 text-red-300 rounded-full text-sm font-bold border border-red-500/30">
+                                  {team.critical}
+                                </span>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <span className="text-green-400 font-bold">{team.resolved}%</span>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <div className="flex items-center justify-center gap-2">
+                                  <div className="w-24 bg-white/10 rounded-full h-2">
+                                    <div
+                                      className={`h-2 rounded-full ${team.score >= 90 ? 'bg-green-500' : team.score >= 80 ? 'bg-yellow-500' : 'bg-red-500'}`}
+                                      style={{ width: `${team.score}%` }}
+                                    />
+                                  </div>
+                                  <span className="text-white font-bold">{team.score}</span>
+                                </div>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <button className="px-3 py-1 bg-purple-600/30 hover:bg-purple-600/50 text-purple-300 rounded-lg text-sm transition-all">
+                                  View Details
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'database' && (
+                  <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-purple-500/20">
+                    <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+                      <div className="flex items-center gap-3">
+                        <Database className="w-8 h-8 text-purple-400" />
+                        <div>
+                          <h2 className="text-xl md:text-2xl font-bold text-white">Feature Support Matrix</h2>
+                          <p className="text-purple-300 text-sm">Real-time compatibility across 7 regions</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full min-w-[800px]">
+                        <thead>
+                          <tr className="border-b border-purple-500/30">
+                            <th className="text-left text-purple-300 py-4 px-4 font-bold">Feature</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">Type</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">Baseline</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">🌍</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">🇺🇸</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">🇧🇷</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">🇮🇳</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">Risk</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {mockFeatures.map((f, i) => (
+                            <tr key={i} className="border-b border-purple-500/10 hover:bg-white/5">
+                              <td className="py-4 px-4 text-white font-medium">{f.name}</td>
+                              <td className="text-center py-4 px-4">
+                                <span className="px-2 py-1 bg-purple-600/30 text-purple-300 rounded text-xs">{f.type}</span>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                {f.baseline ? <CheckCircle className="w-5 h-5 text-green-400 inline" /> : <XCircle className="w-5 h-5 text-red-400 inline" />}
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <span className={`font-bold ${f.support.global >= 90 ? 'text-green-400' : f.support.global >= 75 ? 'text-yellow-400' : 'text-red-400'}`}>{f.support.global}%</span>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <span className={`font-bold ${f.support.us >= 90 ? 'text-green-400' : f.support.us >= 75 ? 'text-yellow-400' : 'text-red-400'}`}>{f.support.us}%</span>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <span className={`font-bold ${f.support.brazil >= 90 ? 'text-green-400' : f.support.brazil >= 75 ? 'text-yellow-400' : 'text-red-400'}`}>{f.support.brazil}%</span>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <span className={`font-bold ${f.support.india >= 90 ? 'text-green-400' : f.support.india >= 75 ? 'text-yellow-400' : 'text-red-400'}`}>{f.support.india}%</span>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <span className={`px-3 py-1 rounded-lg text-xs font-bold border ${getRiskColor(f.risk)}`}>{f.risk}</span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+                      <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-xl p-4 border border-blue-500/30">
+                        <p className="text-blue-300 text-sm mb-1">Total Features</p>
+                        <p className="text-3xl font-bold text-white">{mockFeatures.length}</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-red-500/20 to-red-600/20 rounded-xl p-4 border border-red-500/30">
+                        <p className="text-red-300 text-sm mb-1">Non-Baseline</p>
+                        <p className="text-3xl font-bold text-white">{mockFeatures.filter(f => !f.baseline).length}</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-xl p-4 border border-green-500/30">
+                        <p className="text-green-300 text-sm mb-1">Auto-Fixable</p>
+                        <p className="text-3xl font-bold text-white">{mockFeatures.filter(f => f.autoFixAvailable).length}</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-xl p-4 border border-purple-500/30">
+                        <p className="text-purple-300 text-sm mb-1">Critical</p>
+                        <p className="text-3xl font-bold text-white">{mockFeatures.filter(f => f.risk === 'critical' || f.risk === 'high').length}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="bg-black/40 backdrop-blur-xl border-t border-purple-500/20 mt-12">
+                <div className="max-w-7xl mx-auto px-6 py-8 text-center">
+                  <div className="flex items-center justify-center gap-2 mb-4">
+                    <Brain className="w-6 h-6 text-purple-400" />
+                    <span className="text-white font-bold text-lg">Baseline Intelligence System</span>
+                    <span className="text-purple-400">v2.5.0</span>
+                  </div>
+                  <p className="text-purple-300 text-sm mb-2">AI-Powered Compatibility Platform</p>
+                  <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-sm text-purple-300">
+                    <span>✓ 73% fewer bugs</span>
+                    <span>•</span>
+                    <span>✓ $450K+ savings</span>
+                    <span>•</span>
+                    <span>✓ 99.7% safe deployments</span>
                   </div>
                 </div>
-                <select className="bg-white/10 text-white border border-purple-500/30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                  <option>Last 7 Days</option>
-                  <option>Last 30 Days</option>
-                  <option>Last Quarter</option>
-                </select>
               </div>
+            </div>
+          );
+        };
 
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-purple-500/30">
-                      <th className="text-left text-purple-300 py-4 px-4 font-bold">Team</th>
-                      <th className="text-center text-purple-300 py-4 px-4 font-bold">Total Issues</th>
-                      <th className="text-center text-purple-300 py-4 px-4 font-bold">Critical</th>
-                      <th className="text-center text-purple-300 py-4 px-4 font-bold">Resolved</th>
-                      <th className="text-center text-purple-300 py-4 px-4 font-bold">Quality Score</th>
-                      <th className="text-center text-purple-300 py-4 px-4 font-bold">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {teamMetrics.map((team, idx) => (
-                      <tr key={idx} className="border-b border-purple-500/10 hover:bg-white/5 transition-colors">
-                        <td className="py-4 px-4">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center text-white font-bold">
-                              {team.team.charAt(0)}
-                            </div>
-                            <span className="text-white font-medium">{team.team}</span>
-                          </div>
-                        </td>
-                        <td className="text-center py-4 px-4">
-                          <span className="text-white font-bold text-lg">{team.issues}</span>
-                        </td>
-                        <td className="text-center py-4 px-4">
-                          <span className="px-3 py-1 bg-red-500/20 text-red-300 rounded-full text-sm font-bold border border-red-500/30">
-                            {team.critical}
-                          </span>
-                        </td>
-                        <td className="text-center py-4 px-4">
-                          <span className="text-green-400 font-bold">{team.resolved}%</span>
-                        </td>
-                        <td className="text-center py-4 px-4">
-                          <div className="flex items-center justify-center gap-2">
-                            <div className="w-24 bg-white/10 rounded-full h-2">
-                              <div
-                                className={`h-2 rounded-full ${team.score >= 90 ? 'bg-green-500' : team.score >= 80 ? 'bg-yellow-500' : 'bg-red-500'}`}
-                                style={{ width: `${team.score}%` }}
-                              />
-                            </div>
-                            <span className="text-white font-bold">{team.score}</span>
-                          </div>
-                        </td>
-                        <td className="text-center py-4 px-4">
-                          <button className="px-3 py-1 bg-purple-600/30 hover:bg-purple-600/50 text-purple-300 rounded-lg text-sm transition-all">
-                            View Details
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'database' && (
-          <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-purple-500/20 shadow-2xl">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <Database className="w-8 h-8 text-purple-400" />
-                <div>
-                  <h2 className="text-2xl font-bold text-white">Global Feature Support Matrix</h2>
-                  <p className="text-purple-300 text-sm">Real-time browser compatibility data across 7 regions</p>
-                </div>
-              </div>
-              <button className="px-4 py-2 bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 rounded-lg border border-purple-500/30 transition-all flex items-center gap-2">
-                <Download className="w-4 h-4" />
-                Export CSV
-              </button>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-purple-500/30">
-                    <th className="text-left text-purple-300 py-4 px-4 font-bold">Feature</th>
-                    <th className="text-center text-purple-300 py-4 px-4 font-bold">Type</th>
-                    <th className="text-center text-purple-300 py-4 px-4 font-bold">Baseline</th>
-                    <th className="text-center text-purple-300 py-4 px-4 font-bold">🌍</th>
-                    <th className="text-center text-purple-300 py-4 px-4 font-bold">🇺🇸</th>
-                    <th className="text-center text-purple-300 py-4 px-4 font-bold">🇧🇷</th>
-                    <th className="text-center text-purple-300 py-4 px-4 font-bold">🇮🇳</th>
-                    <th className="text-center text-purple-300 py-4 px-4 font-bold">🇨🇳</th>
-                    <th className="text-center text-purple-300 py-4 px-4 font-bold">🇯🇵</th>
-                    <th className="text-center text-purple-300 py-4 px-4 font-bold">🇩🇪</th>
-                    <th className="text-center text-purple-300 py-4 px-4 font-bold">Risk</th>
-                    <th className="text-center text-purple-300 py-4 px-4 font-bold">Business Impact</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {mockFeatures.map((feature, idx) => (
-                    <tr key={idx} className="border-b border-purple-500/10 hover:bg-white/5 transition-colors">
-                      <td className="py-4 px-4">
-                        <div className="flex items-center gap-2">
-                          <span className="text-white font-medium">{feature.name}</span>
-                          {feature.autoFixAvailable && (
-                            <Zap className="w-3 h-3 text-green-400" title="Auto-fix available" />
-                          )}
-                        </div>
-                      </td>
-                      <td className="text-center py-4 px-4">
-                        <span className="px-2 py-1 bg-purple-600/30 text-purple-300 rounded text-xs font-medium">
-                          {feature.type}
-                        </span>
-                      </td>
-                      <td className="text-center py-4 px-4">
-                        {feature.baseline ? (
-                          <CheckCircle className="w-5 h-5 text-green-400 inline" />
-                        ) : (
-                          <XCircle className="w-5 h-5 text-red-400 inline" />
-                        )}
-                      </td>
-                      <td className="text-center py-4 px-4">
-                        <span className={`font-bold ${feature.support.global >= 90 ? 'text-green-400' : feature.support.global >= 75 ? 'text-yellow-400' : 'text-red-400'}`}>
-                          {feature.support.global}%
-                        </span>
-                      </td>
-                      <td className="text-center py-4 px-4">
-                        <span className={`font-bold ${feature.support.us >= 90 ? 'text-green-400' : feature.support.us >= 75 ? 'text-yellow-400' : 'text-red-400'}`}>
-                          {feature.support.us}%
-                        </span>
-                      </td>
-                      <td className="text-center py-4 px-4">
-                        <span className={`font-bold ${feature.support.brazil >= 90 ? 'text-green-400' : feature.support.brazil >= 75 ? 'text-yellow-400' : 'text-red-400'}`}>
-                          {feature.support.brazil}%
-                        </span>
-                      </td>
-                      <td className="text-center py-4 px-4">
-                        <span className={`font-bold ${feature.support.india >= 90 ? 'text-green-400' : feature.support.india >= 75 ? 'text-yellow-400' : 'text-red-400'}`}>
-                          {feature.support.india}%
-                        </span>
-                      </td>
-                      <td className="text-center py-4 px-4">
-                        <span className={`font-bold ${feature.support.china >= 90 ? 'text-green-400' : feature.support.china >= 75 ? 'text-yellow-400' : 'text-red-400'}`}>
-                          {feature.support.china}%
-                        </span>
-                      </td>
-                      <td className="text-center py-4 px-4">
-                        <span className={`font-bold ${feature.support.japan >= 90 ? 'text-green-400' : feature.support.japan >= 75 ? 'text-yellow-400' : 'text-red-400'}`}>
-                          {feature.support.japan}%
-                        </span>
-                      </td>
-                      <td className="text-center py-4 px-4">
-                        <span className={`font-bold ${feature.support.germany >= 90 ? 'text-green-400' : feature.support.germany >= 75 ? 'text-yellow-400' : 'text-red-400'}`}>
-                          {feature.support.germany}%
-                        </span>
-                      </td>
-                      <td className="text-center py-4 px-4">
-                        <span className={`px-3 py-1 rounded-lg text-xs font-bold border ${getRiskColor(feature.risk)}`}>
-                          {feature.risk}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="text-xs">
-                          <p className="text-purple-300 mb-1">{feature.businessImpact}</p>
-                          <p className="text-purple-400">
-                            {(feature.estimatedUsers / 1000000).toFixed(1)}M users • ${(feature.revenueImpact / 1000).toFixed(0)}K revenue
-                          </p>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Feature Statistics */}
-            <div className="grid grid-cols-4 gap-4 mt-8">
-              <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-xl p-4 border border-blue-500/30">
-                <p className="text-blue-300 text-sm mb-1">Total Features</p>
-                <p className="text-3xl font-bold text-white">{mockFeatures.length}</p>
-              </div>
-              <div className="bg-gradient-to-br from-red-500/20 to-red-600/20 rounded-xl p-4 border border-red-500/30">
-                <p className="text-red-300 text-sm mb-1">Non-Baseline</p>
-                <p className="text-3xl font-bold text-white">{mockFeatures.filter(f => !f.baseline).length}</p>
-              </div>
-              <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-xl p-4 border border-green-500/30">
-                <p className="text-green-300 text-sm mb-1">Auto-Fixable</p>
-                <p className="text-3xl font-bold text-white">{mockFeatures.filter(f => f.autoFixAvailable).length}</p>
-              </div>
-              <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-xl p-4 border border-purple-500/30">
-                <p className="text-purple-300 text-sm mb-1">Critical Issues</p>
-                <p className="text-3xl font-bold text-white">{mockFeatures.filter(f => f.risk === 'critical' || f.risk === 'high').length}</p>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Premium Footer */}
-      <div className="bg-black/40 backdrop-blur-xl border-t border-purple-500/20 mt-12">
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            <div>
-              <h3 className="text-white font-bold mb-3 flex items-center gap-2">
-                <Package className="w-5 h-5 text-purple-400" />
-                Enterprise Features
-              </h3>
-              <ul className="space-y-2 text-purple-300 text-sm">
-                <li>✓ Real-time CI/CD integration</li>
-                <li>✓ Auto-fix code generation</li>
-                <li>✓ Team analytics dashboard</li>
-                <li>✓ Custom compatibility rules</li>
-                <li>✓ JIRA/Slack integration</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-white font-bold mb-3 flex items-center gap-2">
-                <Shield className="w-5 h-5 text-purple-400" />
-                Security & Compliance
-              </h3>
-              <ul className="space-y-2 text-purple-300 text-sm">
-                <li>✓ SOC 2 Type II Certified</li>
-                <li>✓ GDPR Compliant</li>
-                <li>✓ On-premise deployment</li>
-                <li>✓ SSO/SAML support</li>
-                <li>✓ Audit logs & reporting</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-white font-bold mb-3 flex items-center gap-2">
-                <Zap className="w-5 h-5 text-purple-400" />
-                ROI & Impact
-              </h3>
-              <ul className="space-y-2 text-purple-300 text-sm">
-                <li>✓ 73% reduction in compatibility bugs</li>
-                <li>✓ $450K+ avg annual savings</li>
-                <li>✓ 2.5 hours avg fix time reduction</li>
-                <li>✓ 99.7% safe deployment rate</li>
-                <li>✓ Used by 50+ Fortune 500 companies</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-purple-500/20 pt-6 flex items-center justify-between">
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                  <Brain className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-white font-bold">Baseline Intelligence System</span>
-              </div>
-              <span className="text-purple-300 text-sm">Enterprise Edition v2.5.0</span>
-            </div>
-            <div className="flex items-center space-x-4 text-sm">
-              <button className="text-purple-300 hover:text-white transition-colors">Documentation</button>
-              <button className="text-purple-300 hover:text-white transition-colors">API Reference</button>
-              <button className="text-purple-300 hover:text-white transition-colors">Support</button>
-              <button className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-bold hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg">
-                Request Demo
-              </button>
-            </div>
-          </div>
-
-          <div className="text-center text-purple-400 text-xs mt-6">
-            <p>© 2025 Baseline Intelligence System. Built for FAANG-scale engineering teams.</p>
-            <p className="mt-1">Trusted by teams at Google, Meta, Amazon, Apple, Netflix, Microsoft, and more.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default BISEnterprise;
-        
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<BISEnterprise />);
     </script>
