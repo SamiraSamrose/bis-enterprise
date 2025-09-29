@@ -372,7 +372,7 @@ const BISEnterprise = () => {
             <span className="text-purple-400">v2.5.0</span>
           </div>
           <p className="text-purple-300 text-sm mb-2">Enterprise AI-Powered Compatibility Platform</p>
-          <p className="text-purple-400 text-xs">Trusted by Fortune 500 Engineering Teams • SOC 2 Certified • GDPR Compliant</p>
+          //<p className="text-purple-400 text-xs">Trusted by Fortune 500 Engineering Teams • SOC 2 Certified • GDPR Compliant</p>
           <div className="mt-4 flex items-center justify-center gap-4 text-sm text-purple-300">
             <span>✓ 73% fewer compatibility bugs</span>
             <span>•</span>
