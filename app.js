@@ -1,3 +1,6 @@
+import React, { useState, useEffect } from 'react';
+import { Globe, Code, AlertTriangle, CheckCircle, XCircle, Search, TrendingUp, Map, Zap, Users, DollarSign, Clock, GitBranch, Shield, Database, BarChart3, Activity, Cpu, Download, Upload, Package, Terminal, Brain, Sparkles } from 'lucide-react';
+
 const { useState, useEffect } = React;
 
 // Lucide Icons as React Components
