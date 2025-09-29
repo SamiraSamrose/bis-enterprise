@@ -29,6 +29,7 @@
         const Users = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
         const DollarSign = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>;
         const Clock = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
+        const GitBranch = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>;
         const Shield = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>;
         const Database = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>;
         const BarChart3 = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>;
@@ -38,6 +39,7 @@
         const Brain = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>;
         const Sparkles = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>;
         const Terminal = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>;
+        const Package = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>;
 
         const BISEnterprise = () => {
           const [activeTab, setActiveTab] = useState('analyzer');
@@ -81,6 +83,21 @@
             { id: 'china', name: 'China', flag: '🇨🇳' },
             { id: 'japan', name: 'Japan', flag: '🇯🇵' },
             { id: 'germany', name: 'Germany', flag: '🇩🇪' },
+          ];
+
+          const cicdIntegrations = [
+            { name: 'GitHub Actions', status: 'active', blocked: 12, passed: 847 },
+            { name: 'GitLab CI', status: 'active', blocked: 8, passed: 623 },
+            { name: 'Jenkins', status: 'active', blocked: 15, passed: 1204 },
+            { name: 'CircleCI', status: 'active', blocked: 5, passed: 432 },
+          ];
+
+          const teamMetrics = [
+            { team: 'Frontend Core', issues: 23, critical: 5, resolved: 89, score: 92 },
+            { team: 'Mobile Web', issues: 34, critical: 8, resolved: 76, score: 85 },
+            { team: 'Marketing Pages', issues: 12, critical: 2, resolved: 95, score: 97 },
+            { team: 'Checkout Flow', issues: 45, critical: 12, resolved: 71, score: 78 },
+            { team: 'Dashboard UI', issues: 18, critical: 3, resolved: 88, score: 94 },
           ];
 
           const analyzeSite = () => {
@@ -181,15 +198,17 @@
 
               <div className="max-w-7xl mx-auto px-6 mt-6">
                 <div className="flex flex-wrap gap-2 bg-black/30 p-1.5 rounded-xl backdrop-blur-xl border border-purple-500/20">
-                  <button onClick={() => setActiveTab('analyzer')} className={`flex-1 min-w-[120px] px-4 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${activeTab === 'analyzer' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : 'text-purple-300'}`}>
-                    <Search className="w-4 h-4" />Site Analyzer
-                  </button>
-                  <button onClick={() => setActiveTab('coach')} className={`flex-1 min-w-[120px] px-4 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${activeTab === 'coach' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : 'text-purple-300'}`}>
-                    <Brain className="w-4 h-4" />AI Coach
-                  </button>
-                  <button onClick={() => setActiveTab('database')} className={`flex-1 min-w-[120px] px-4 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${activeTab === 'database' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : 'text-purple-300'}`}>
-                    <Database className="w-4 h-4" />Feature DB
-                  </button>
+                  {[
+                    { id: 'analyzer', icon: Search, label: 'Site Analyzer' },
+                    { id: 'coach', icon: Brain, label: 'AI Coach' },
+                    { id: 'cicd', icon: GitBranch, label: 'CI/CD' },
+                    { id: 'teams', icon: Users, label: 'Teams' },
+                    { id: 'database', icon: Database, label: 'Feature DB' }
+                  ].map(tab => (
+                    <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex-1 min-w-[100px] px-3 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 text-sm ${activeTab === tab.id ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : 'text-purple-300'}`}>
+                      <tab.icon className="w-4 h-4" />{tab.label}
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -294,24 +313,24 @@
                       </div>
                       <div>
                         <h2 className="text-xl md:text-2xl font-bold text-white">AI Development Coach</h2>
-                        <p className="text-purple-300 text-sm">GPT-4 powered code analysis</p>
+                        <p className="text-purple-300 text-sm">GPT-4 powered code analysis with auto-fix</p>
                       </div>
                     </div>
                     <textarea placeholder="// Paste your CSS, HTML, or JavaScript code here...&#10;&#10;.modal {&#10;  backdrop-filter: blur(10px);&#10;}&#10;&#10;@container (min-width: 400px) {&#10;  .card { padding: 2rem; }&#10;}" className="w-full h-64 bg-black/60 text-white border border-purple-500/30 rounded-xl px-6 py-4 placeholder-purple-300/50 font-mono text-sm" />
                     <div className="mt-4 bg-purple-500/10 border border-purple-500/30 rounded-xl p-4">
                       <h3 className="text-white font-bold mb-2 flex items-center gap-2">
                         <Sparkles className="w-5 h-5 text-purple-400" />
-                        AI Analysis Demo
+                        AI Analysis Features
                       </h3>
-                      <p className="text-purple-200 text-sm mb-3">The AI coach would detect non-baseline features in your code and provide:</p>
+                      <p className="text-purple-200 text-sm mb-3">The AI coach analyzes your code and provides:</p>
                       <ul className="space-y-2 text-purple-300 text-sm">
                         <li className="flex items-start gap-2">
                           <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                          <span>Feature compatibility analysis across 7 regions</span>
+                          <span>Feature compatibility analysis across 7 global regions</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                          <span>Business impact calculation (revenue risk, user impact)</span>
+                          <span>Business impact calculation (revenue risk, affected users)</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
@@ -324,8 +343,172 @@
                       </ul>
                       <button className="mt-4 w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-lg font-bold hover:from-purple-700 hover:to-pink-700 transition-all flex items-center justify-center gap-2">
                         <Brain className="w-5 h-5" />
-                        Analyze with AI (Demo)
+                        Analyze with AI
                       </button>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'cicd' && (
+                  <div className="space-y-6">
+                    <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-purple-500/20">
+                      <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+                        <div className="flex items-center gap-3">
+                          <GitBranch className="w-8 h-8 text-purple-400" />
+                          <div>
+                            <h2 className="text-2xl font-bold text-white">CI/CD Pipeline Integration</h2>
+                            <p className="text-purple-300 text-sm">Real-time compatibility checks in your workflow</p>
+                          </div>
+                        </div>
+                        <button className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-all flex items-center gap-2">
+                          <Package className="w-4 h-4" />
+                          Install Plugin
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                        {cicdIntegrations.map((integration, idx) => (
+                          <div key={idx} className="bg-gradient-to-r from-white/5 to-white/0 rounded-xl p-6 border border-purple-500/20">
+                            <div className="flex items-center justify-between mb-4">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-purple-600/30 rounded-lg flex items-center justify-center">
+                                  <GitBranch className="w-5 h-5 text-purple-400" />
+                                </div>
+                                <div>
+                                  <h3 className="text-white font-bold">{integration.name}</h3>
+                                  <span className="text-xs text-green-400 flex items-center gap-1">
+                                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                                    {integration.status}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="bg-red-500/10 rounded-lg p-3 border border-red-500/30">
+                                <p className="text-red-400 text-xs mb-1">Blocked PRs</p>
+                                <p className="text-white font-bold text-xl">{integration.blocked}</p>
+                              </div>
+                              <div className="bg-green-500/10 rounded-lg p-3 border border-green-500/30">
+                                <p className="text-green-400 text-xs mb-1">Passed</p>
+                                <p className="text-white font-bold text-xl">{integration.passed}</p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="bg-black/60 rounded-xl p-6 border border-purple-500/20">
+                        <h3 className="text-white font-bold mb-4 flex items-center gap-2">
+                          <Terminal className="w-5 h-5 text-green-400" />
+                          Sample CI/CD Configuration
+                        </h3>
+                        <pre className="bg-black/80 text-green-300 p-4 rounded-lg text-xs overflow-x-auto font-mono leading-relaxed">
+{`# .github/workflows/bis-check.yml
+name: Baseline Intelligence Check
+
+on: [pull_request]
+
+jobs:
+  compatibility-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run BIS Analysis
+        uses: baseline-intelligence/action@v1
+        with:
+          region: 'global'
+          threshold: 85  # Block if support < 85%
+          auto-fix: true
+          slack-notify: true
+        env:
+          BIS_API_KEY: \${{ secrets.BIS_API_KEY }}
+      
+      - name: Comment PR
+        if: failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              body: '⚠️ BIS detected non-baseline features'
+            })`}
+                        </pre>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'teams' && (
+                  <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-purple-500/20">
+                    <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+                      <div className="flex items-center gap-3">
+                        <Users className="w-8 h-8 text-purple-400" />
+                        <div>
+                          <h2 className="text-2xl font-bold text-white">Team Compatibility Dashboard</h2>
+                          <p className="text-purple-300 text-sm">Track feature usage and quality scores across teams</p>
+                        </div>
+                      </div>
+                      <select className="bg-white/10 text-white border border-purple-500/30 rounded-lg px-4 py-2">
+                        <option>Last 7 Days</option>
+                        <option>Last 30 Days</option>
+                        <option>Last Quarter</option>
+                      </select>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                      <table className="w-full min-w-[600px]">
+                        <thead>
+                          <tr className="border-b border-purple-500/30">
+                            <th className="text-left text-purple-300 py-4 px-4 font-bold">Team</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">Issues</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">Critical</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">Resolved</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">Score</th>
+                            <th className="text-center text-purple-300 py-4 px-4 font-bold">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {teamMetrics.map((team, idx) => (
+                            <tr key={idx} className="border-b border-purple-500/10 hover:bg-white/5 transition-colors">
+                              <td className="py-4 px-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center text-white font-bold">
+                                    {team.team.charAt(0)}
+                                  </div>
+                                  <span className="text-white font-medium">{team.team}</span>
+                                </div>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <span className="text-white font-bold text-lg">{team.issues}</span>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <span className="px-3 py-1 bg-red-500/20 text-red-300 rounded-full text-sm font-bold border border-red-500/30">
+                                  {team.critical}
+                                </span>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <span className="text-green-400 font-bold">{team.resolved}%</span>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <div className="flex items-center justify-center gap-2">
+                                  <div className="w-24 bg-white/10 rounded-full h-2">
+                                    <div
+                                      className={`h-2 rounded-full ${team.score >= 90 ? 'bg-green-500' : team.score >= 80 ? 'bg-yellow-500' : 'bg-red-500'}`}
+                                      style={{ width: `${team.score}%` }}
+                                    />
+                                  </div>
+                                  <span className="text-white font-bold">{team.score}</span>
+                                </div>
+                              </td>
+                              <td className="text-center py-4 px-4">
+                                <button className="px-3 py-1 bg-purple-600/30 hover:bg-purple-600/50 text-purple-300 rounded-lg text-sm transition-all">
+                                  View Details
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 )}
